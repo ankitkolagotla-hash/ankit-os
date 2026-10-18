@@ -1,0 +1,1690 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#04050B">
+<title>Ankit Command OS</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Ankit Kolagotla's live command center: Canvas grades, Nov 1 what-if recovery, ED II matrix, teacher email studio, and focus tools.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap">
+<script src="https://cdn.tailwindcss.com/3.4.17"></script>
+<script>try{tailwind.config={corePlugins:{preflight:false}}}catch(e){}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{
+  /* Layout: a fixed obsidian-aurora field (stars + drifting aurora) under a sticky glass command bar; each tab is a pane on a 12-column grid that stacks to one column under 980px */
+  --void:#04050B;
+  --abyss:#0A0E1C;
+  --ink:#ECF2FF;
+  --ink-2:rgba(236,242,255,.74);
+  --ink-3:rgba(236,242,255,.52);
+  --ink-4:rgba(236,242,255,.32);
+  --ice:#8BEFFF;
+  --violet:#B3A6FF;
+  --teal:#36E2C4;
+  --rose:#FF8BCB;
+  --ok:#5FE8A9;
+  --warn:#FFC870;
+  --crit:#FF6F8C;
+  --hair:rgba(255,255,255,.085);
+  --hair-2:rgba(255,255,255,.14);
+  --spec:rgba(255,255,255,.28);
+  --well:rgba(2,4,10,.40);
+  --f-ui:'Inter',ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+  --f-mono:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,Consolas,'Liberation Mono',monospace;
+  --r:20px;--r-md:14px;--r-sm:10px;
+  color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0}
+[hidden]{display:none!important}
+body{background:var(--void);color:var(--ink);font:14px/1.5 var(--f-ui);-webkit-font-smoothing:antialiased;min-height:100%;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:70;background:rgba(4,5,11,.92)}
+a{color:var(--ice);text-decoration:none}
+a:hover{text-decoration:underline}
+button{font:inherit;color:inherit}
+h1,h2,h3,h4,p{margin:0}
+:focus-visible{outline:2px solid var(--ice);outline-offset:2px;border-radius:6px}
+::selection{background:rgba(139,239,255,.3)}
+
+/* ---------- cosmos ---------- */
+#cosmos{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;background:
+  radial-gradient(120% 80% at 50% -10%, #0C1430 0%, rgba(12,20,48,0) 60%),
+  radial-gradient(90% 60% at 100% 100%, #120B26 0%, rgba(18,11,38,0) 60%),
+  linear-gradient(180deg,#05070F 0%, var(--void) 100%)}
+#stars{position:absolute;inset:0}
+.aurora{position:absolute;border-radius:50%;will-change:transform;mix-blend-mode:screen}
+.a1{width:80vmax;height:50vmax;top:-26vmax;left:-18vmax;background:radial-gradient(closest-side,rgba(54,226,196,.30),rgba(54,226,196,0));animation:drift1 70s ease-in-out infinite alternate}
+.a2{width:70vmax;height:46vmax;top:-18vmax;right:-26vmax;background:radial-gradient(closest-side,rgba(139,239,255,.22),rgba(139,239,255,0));animation:drift2 85s ease-in-out infinite alternate}
+.a3{width:90vmax;height:60vmax;bottom:-40vmax;left:4vmax;background:radial-gradient(closest-side,rgba(179,166,255,.24),rgba(179,166,255,0));animation:drift3 95s ease-in-out infinite alternate}
+.a4{width:50vmax;height:36vmax;bottom:-12vmax;right:-14vmax;background:radial-gradient(closest-side,rgba(255,139,203,.12),rgba(255,139,203,0));animation:drift2 110s ease-in-out infinite alternate-reverse}
+@keyframes drift1{to{transform:translate3d(14vmax,8vmax,0) rotate(8deg)}}
+@keyframes drift2{to{transform:translate3d(-12vmax,10vmax,0) rotate(-10deg)}}
+@keyframes drift3{to{transform:translate3d(10vmax,-12vmax,0) rotate(6deg)}}
+.grain{position:absolute;inset:-50%;opacity:.07;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+.vignette{position:absolute;inset:0;background:radial-gradient(120% 90% at 50% 40%, rgba(0,0,0,0) 55%, rgba(0,0,0,.55) 100%)}
+
+/* ---------- shell ---------- */
+.gutter{padding-left:max(16px, env(safe-area-inset-left,0px));padding-right:max(16px, env(safe-area-inset-right,0px))}
+.shell{position:relative;z-index:1}
+.wrap{max-width:1360px;margin:0 auto}
+.topbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:40;background:linear-gradient(180deg,rgba(6,8,18,.78),rgba(6,8,18,.58));-webkit-backdrop-filter:blur(24px) saturate(180%);backdrop-filter:blur(24px) saturate(180%);border-bottom:1px solid var(--hair)}
+.topbar-in{display:grid;grid-template-columns:auto 1fr auto;grid-template-areas:"brand tabs status";align-items:center;gap:14px;padding-block:10px}
+.brand{grid-area:brand;display:flex;align-items:center;gap:10px;min-width:0}
+.brand canvas{width:38px;height:38px;flex:none}
+.brand-name{font:800 13px/1 var(--f-ui);letter-spacing:.18em;text-transform:uppercase}
+.brand-sub{font:500 10.5px/1.2 var(--f-mono);color:var(--ink-3);letter-spacing:.06em;margin-top:4px;white-space:nowrap}
+.tabs{grid-area:tabs;display:flex;gap:2px;overflow-x:auto;scrollbar-width:none;min-width:0;justify-content:center}
+.tabs::-webkit-scrollbar{display:none}
+.tab{white-space:nowrap;height:32px;padding:0 11px;border-radius:9px;font:600 12.5px/1 var(--f-ui);color:var(--ink-3);background:transparent;border:1px solid transparent;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:color .2s,background .2s}
+.tab:hover{color:var(--ink)}
+.tab[aria-selected="true"]{color:var(--ink);background:rgba(255,255,255,.08);border-color:var(--hair);border-top-color:rgba(255,255,255,.24)}
+.tab .k{font:500 9.5px/1 var(--f-mono);color:var(--ink-4)}
+.tab .dot{width:6px;height:6px;border-radius:50%;background:var(--crit);box-shadow:0 0 8px var(--crit)}
+.status{grid-area:status;display:flex;align-items:center;gap:8px;justify-content:flex-end}
+.clock{font:500 12px/1 var(--f-mono);color:var(--ink-2);letter-spacing:.02em}
+@media (max-width:1180px){
+  .topbar-in{grid-template-columns:1fr auto;grid-template-areas:"brand status" "tabs tabs";row-gap:8px}
+  .tabs{justify-content:flex-start}
+}
+@media (max-width:560px){.clock,.brand-sub{display:none}}
+main{padding-block:22px 64px}
+.pane{display:flex;flex-direction:column;gap:18px}
+
+/* ---------- glass ---------- */
+.glass{position:relative;background:linear-gradient(145deg,rgba(255,255,255,.085) 0%,rgba(255,255,255,.028) 52%,rgba(255,255,255,.045) 100%);-webkit-backdrop-filter:blur(28px) saturate(190%);backdrop-filter:blur(28px) saturate(190%);border:1px solid var(--hair);border-top-color:var(--spec);border-left-color:var(--spec);border-radius:var(--r);box-shadow:0 30px 70px -30px rgba(0,0,0,.85),inset 0 1px 0 rgba(255,255,255,.10),inset 1px 0 0 rgba(255,255,255,.05)}
+.glass::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:radial-gradient(520px circle at var(--mx,20%) var(--my,-20%),rgba(255,255,255,.075),rgba(255,255,255,0) 45%)}
+.glass.deep{background:linear-gradient(145deg,rgba(255,255,255,.11) 0%,rgba(255,255,255,.035) 55%,rgba(139,239,255,.05) 100%)}
+.tilt{transition:transform .35s cubic-bezier(.2,.8,.2,1),box-shadow .35s;transform-style:preserve-3d}
+.pad{padding:18px}
+.pad-lg{padding:24px}
+@media (max-width:560px){.pad-lg{padding:18px}}
+.well{background:var(--well);border:1px solid var(--hair);border-radius:var(--r-md)}
+
+/* ---------- grid ---------- */
+.cols{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:18px}
+.s12{grid-column:span 12}.s8{grid-column:span 8}.s7{grid-column:span 7}.s6{grid-column:span 6}.s5{grid-column:span 5}.s4{grid-column:span 4}
+@media (max-width:980px){.s8,.s7,.s6,.s5,.s4{grid-column:span 12}}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+@media (max-width:400px){.cards{grid-template-columns:minmax(0,1fr)}}
+.stack{display:flex;flex-direction:column;gap:12px}
+.row{display:flex;align-items:center;gap:10px}
+.between{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.wrapx{flex-wrap:wrap}
+.minw0{min-width:0}
+.scrollx{overflow-x:auto;-webkit-overflow-scrolling:touch}
+
+/* ---------- type ---------- */
+.eyebrow{font:600 10.5px/1.2 var(--f-mono);letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3)}
+.h1{font:700 clamp(26px,3.6vw,42px)/1.04 var(--f-ui);letter-spacing:-.03em;text-wrap:balance}
+.h2{font:700 17px/1.2 var(--f-ui);letter-spacing:-.01em}
+.h3{font:600 14px/1.3 var(--f-ui)}
+.lede{color:var(--ink-2);font-size:15px;line-height:1.55;max-width:64ch}
+.muted{color:var(--ink-3)}
+.faint{color:var(--ink-4)}
+.small{font-size:12px}
+.xs{font-size:11px}
+.mono{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+.num{font-variant-numeric:tabular-nums}
+.big{font:600 46px/1 var(--f-mono);letter-spacing:-.04em;font-variant-numeric:tabular-nums}
+.mid{font:600 28px/1 var(--f-mono);letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.ice{color:var(--ice)}.ok{color:var(--ok)}.warn{color:var(--warn)}.crit{color:var(--crit)}.violet{color:var(--violet)}
+.trunc{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sectitle{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:12px;flex-wrap:wrap}
+
+/* ---------- controls ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:34px;padding:0 14px;border-radius:10px;border:1px solid var(--hair);border-top-color:rgba(255,255,255,.2);background:rgba(255,255,255,.06);color:var(--ink);font:600 12.5px/1 var(--f-ui);cursor:pointer;transition:background .2s,border-color .2s,transform .12s;white-space:nowrap;text-decoration:none}
+.btn:hover{background:rgba(255,255,255,.11);text-decoration:none}
+.btn:active{transform:translateY(1px)}
+.btn.primary{background:linear-gradient(180deg,rgba(139,239,255,.30),rgba(139,239,255,.10));border-color:rgba(139,239,255,.45);color:#EFFCFF;box-shadow:0 8px 24px -10px rgba(139,239,255,.55)}
+.btn.primary:hover{background:linear-gradient(180deg,rgba(139,239,255,.40),rgba(139,239,255,.16))}
+.btn.danger{border-color:rgba(255,111,140,.4);color:#FFD5DE}
+.btn.sm{height:28px;padding:0 10px;font-size:11.5px;border-radius:8px}
+.btn.ghost{background:transparent}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+.pill{display:inline-flex;align-items:center;gap:6px;height:22px;padding:0 9px;border-radius:999px;font:600 10px/1 var(--f-mono);letter-spacing:.07em;text-transform:uppercase;border:1px solid var(--hair);background:rgba(255,255,255,.04);color:var(--ink-2);white-space:nowrap}
+.pill.ok{color:var(--ok);border-color:rgba(95,232,169,.35);background:rgba(95,232,169,.09)}
+.pill.warn{color:var(--warn);border-color:rgba(255,200,112,.35);background:rgba(255,200,112,.09)}
+.pill.crit{color:var(--crit);border-color:rgba(255,111,140,.4);background:rgba(255,111,140,.10)}
+.pill.ice{color:var(--ice);border-color:rgba(139,239,255,.35);background:rgba(139,239,255,.08)}
+.pill.violet{color:var(--violet);border-color:rgba(179,166,255,.35);background:rgba(179,166,255,.09)}
+.code{display:inline-flex;align-items:center;height:20px;padding:0 7px;border-radius:6px;font:700 10px/1 var(--f-mono);letter-spacing:.06em;background:rgba(255,255,255,.07);border:1px solid var(--hair);color:var(--ink-2);white-space:nowrap}
+.field{width:100%;background:var(--well);border:1px solid var(--hair);border-radius:10px;color:var(--ink);font:500 13px/1.45 var(--f-ui);padding:9px 11px;transition:border-color .2s, box-shadow .2s}
+.field:focus{outline:none;border-color:rgba(139,239,255,.55);box-shadow:0 0 0 3px rgba(139,239,255,.14)}
+textarea.field{resize:vertical;min-height:96px}
+select.field{appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%23ECF2FF' stroke-opacity='.6' stroke-width='1.5'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;padding-right:28px}
+select.field option{background:#0B1020;color:var(--ink)}
+.field.sm{padding:5px 8px;font-size:12px;border-radius:8px}
+.pct{width:62px;text-align:right;font-family:var(--f-mono)}
+input[type=number]::-webkit-inner-spin-button{opacity:.4}
+.chk{appearance:none;-webkit-appearance:none;width:18px;height:18px;flex:none;border-radius:6px;border:1.5px solid rgba(236,242,255,.35);background:rgba(0,0,0,.25);cursor:pointer;display:inline-grid;place-content:center;transition:all .15s;margin:0}
+.chk::after{content:"";width:9px;height:5px;border-left:2px solid #041016;border-bottom:2px solid #041016;transform:rotate(-45deg) translate(1px,-1px) scale(0);transition:transform .15s}
+.chk:checked{background:var(--ice);border-color:var(--ice);box-shadow:0 0 12px rgba(139,239,255,.5)}
+.chk:checked::after{transform:rotate(-45deg) translate(1px,-1px) scale(1)}
+.switch{appearance:none;-webkit-appearance:none;width:36px;height:20px;flex:none;border-radius:999px;background:rgba(255,255,255,.12);border:1px solid var(--hair);position:relative;cursor:pointer;transition:background .2s;margin:0}
+.switch::after{content:"";position:absolute;top:2px;left:2px;width:14px;height:14px;border-radius:50%;background:var(--ink);transition:transform .2s}
+.switch:checked{background:rgba(139,239,255,.45);border-color:rgba(139,239,255,.6)}
+.switch:checked::after{transform:translateX(16px);background:#fff}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:20px;background:transparent;margin:0}
+input[type=range]::-webkit-slider-runnable-track{height:4px;border-radius:4px;background:linear-gradient(90deg,var(--ice) var(--p,50%),rgba(255,255,255,.12) var(--p,50%))}
+input[type=range]::-moz-range-track{height:4px;border-radius:4px;background:rgba(255,255,255,.12)}
+input[type=range]::-moz-range-progress{height:4px;border-radius:4px;background:var(--ice)}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;border-radius:50%;background:#fff;margin-top:-6px;box-shadow:0 0 0 3px rgba(139,239,255,.3),0 2px 8px rgba(0,0,0,.5)}
+input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;background:#fff;border:0;box-shadow:0 0 0 3px rgba(139,239,255,.3)}
+.seg{display:inline-flex;padding:3px;border-radius:10px;background:var(--well);border:1px solid var(--hair);gap:2px}
+.seg button{height:26px;padding:0 10px;border-radius:7px;border:0;background:transparent;color:var(--ink-3);font:600 11.5px/1 var(--f-ui);cursor:pointer}
+.seg button[aria-pressed="true"]{background:rgba(255,255,255,.1);color:var(--ink)}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;font-size:12.5px}
+.kv dt{color:var(--ink-3)}.kv dd{margin:0}
+hr.hair{border:0;border-top:1px solid var(--hair);margin:0}
+
+/* ---------- hero ---------- */
+.hero{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:28px;align-items:center}
+.hero-orb{width:190px;height:190px;position:relative}
+.hero-orb canvas{width:100%;height:100%}
+.hero-orb::before{content:"";position:absolute;inset:14%;border-radius:50%;background:radial-gradient(closest-side,rgba(139,239,255,.18),rgba(139,239,255,0));filter:blur(6px)}
+@media (max-width:760px){.hero{grid-template-columns:minmax(0,1fr)}.hero-orb{display:none}}
+.strip{display:flex;gap:10px;overflow-x:auto;padding-bottom:4px;scrollbar-width:thin}
+.evt{flex:none;min-width:190px;padding:12px 14px;border-radius:14px;background:rgba(255,255,255,.045);border:1px solid var(--hair);border-top-color:rgba(255,255,255,.18)}
+.evt .t{font:600 15px/1.1 var(--f-mono);font-variant-numeric:tabular-nums;margin-top:6px}
+.evt .l{font-size:12.5px;color:var(--ink-2);margin-top:4px;line-height:1.3}
+.evt.crit{border-left:2px solid var(--crit)}.evt.warn{border-left:2px solid var(--warn)}.evt.ice{border-left:2px solid var(--ice)}.evt.violet{border-left:2px solid var(--violet)}
+
+/* ---------- gpa meter ---------- */
+.meter{position:relative;height:12px;border-radius:999px;background:rgba(255,255,255,.07);border:1px solid var(--hair);margin-top:14px}
+.meter .band{position:absolute;top:-1px;bottom:-1px;border-radius:999px;background:linear-gradient(90deg,rgba(95,232,169,.35),rgba(95,232,169,.2));border:1px solid rgba(95,232,169,.5)}
+.meter .fill{position:absolute;left:0;top:0;bottom:0;border-radius:999px;background:linear-gradient(90deg,rgba(139,239,255,.15),rgba(139,239,255,.55))}
+.meter .mk{position:absolute;top:50%;width:14px;height:14px;margin:-7px 0 0 -7px;border-radius:50%;border:2px solid #fff;background:var(--void)}
+.meter .mk.plan{background:var(--ice);box-shadow:0 0 14px var(--ice)}
+.meter-scale{display:flex;justify-content:space-between;font:500 10px/1 var(--f-mono);color:var(--ink-4);margin-top:7px}
+
+/* ---------- queue ---------- */
+.q{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:12px;align-items:center;padding:11px 12px;border-radius:12px;border:1px solid transparent;transition:background .2s,border-color .2s}
+.q:hover{background:rgba(255,255,255,.035);border-color:var(--hair)}
+.q.done .qn{text-decoration:line-through;text-decoration-color:rgba(236,242,255,.4);color:var(--ink-3)}
+.qn{font-weight:600;font-size:13.5px;line-height:1.3}
+.qm{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center;margin-top:4px;font-size:11.5px;color:var(--ink-3)}
+.gain{font:700 13px/1 var(--f-mono);color:var(--ok);text-align:right;white-space:nowrap}
+.gain small{display:block;font:500 10px/1.3 var(--f-mono);color:var(--ink-3);margin-top:4px}
+
+/* ---------- course cards ---------- */
+.cc{display:flex;flex-direction:column;gap:14px;padding:18px;min-width:0}
+.cc-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.cc-name{font:700 16px/1.2 var(--f-ui);letter-spacing:-.01em}
+.cc-teacher{font-size:12px;color:var(--ink-3);margin-top:3px}
+.cc-grade{display:flex;align-items:flex-end;gap:12px;flex-wrap:wrap}
+.letter{font:700 20px/1 var(--f-ui);padding:6px 10px;border-radius:10px;background:rgba(255,255,255,.07);border:1px solid var(--hair)}
+.grp{display:grid;grid-template-columns:minmax(0,1fr) 44px 58px;gap:8px;align-items:center;font-size:11.5px}
+.grp .bar{grid-column:1/-1;height:4px;border-radius:4px;background:rgba(255,255,255,.07);overflow:hidden;margin-top:-4px}
+.grp .bar i{display:block;height:100%;border-radius:4px}
+.stats3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.stat{padding:8px 10px;border-radius:10px;background:var(--well);border:1px solid var(--hair)}
+.stat b{display:block;font:700 18px/1 var(--f-mono)}
+.stat span{font-size:10.5px;color:var(--ink-3);letter-spacing:.04em}
+.ta{align-self:start;display:flex;align-items:center;gap:14px;padding:14px 18px;border-radius:var(--r);border:1px dashed rgba(255,255,255,.14);color:var(--ink-3)}
+.mini{display:grid;grid-template-columns:44px minmax(0,1fr) 64px 36px;gap:10px;align-items:center;padding:8px 2px;border-bottom:1px solid var(--hair);font-size:12.5px}
+.mini:last-child{border-bottom:0}
+.mini .track{height:6px;border-radius:6px;background:rgba(255,255,255,.07);position:relative;overflow:hidden}
+.mini .track i{position:absolute;left:0;top:0;bottom:0;border-radius:6px}
+.mini .track u{position:absolute;top:0;bottom:0;border-radius:6px;background:rgba(139,239,255,.35)}
+
+/* ---------- what-if ---------- */
+.wi{border-radius:16px;border:1px solid var(--hair);background:rgba(255,255,255,.025);overflow:hidden}
+.wi > summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:12px;align-items:center;padding:14px 16px}
+.wi > summary::-webkit-details-marker{display:none}
+.wi[open] > summary{border-bottom:1px solid var(--hair)}
+.wi .chev{transition:transform .2s;color:var(--ink-3)}
+.wi[open] .chev{transform:rotate(90deg)}
+.lv{display:grid;grid-template-columns:auto minmax(0,1fr) auto auto;gap:10px 12px;align-items:center;padding:10px 16px;border-bottom:1px solid rgba(255,255,255,.045)}
+.lv:last-child{border-bottom:0}
+.lv .nm{font-size:13px;font-weight:500;line-height:1.3}
+.lv .meta{font-size:11px;color:var(--ink-3);margin-top:3px;display:flex;flex-wrap:wrap;gap:4px 10px;align-items:center}
+.lv .g{font:600 12px/1 var(--f-mono);min-width:52px;text-align:right}
+@media (max-width:560px){.lv{grid-template-columns:auto minmax(0,1fr) auto}.lv .g{grid-column:2/-1;text-align:left}}
+.chartbox{position:relative;height:300px}
+.chartbox.tall{height:340px}
+.nochart{display:grid;place-content:center;height:100%;color:var(--ink-3);font-size:12.5px;text-align:center}
+
+/* ---------- tables ---------- */
+table.t{width:100%;border-collapse:collapse;font-size:12.5px}
+table.t th{font:600 10px/1.2 var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);text-align:left;padding:8px 8px;border-bottom:1px solid var(--hair);white-space:nowrap}
+table.t td{padding:8px;border-bottom:1px solid rgba(255,255,255,.045);vertical-align:middle}
+table.t tr:last-child td{border-bottom:0}
+table.t input.field{width:58px;padding:5px 6px;text-align:center;font-family:var(--f-mono)}
+
+/* ---------- email ---------- */
+.mailgrid{display:grid;grid-template-columns:300px minmax(0,1fr);gap:18px}
+@media (max-width:900px){.mailgrid{grid-template-columns:minmax(0,1fr)}}
+.who{display:flex;flex-direction:column;gap:8px}
+.whob{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 10px;text-align:left;padding:12px 14px;border-radius:12px;border:1px solid var(--hair);background:rgba(255,255,255,.03);cursor:pointer;transition:background .2s,border-color .2s;width:100%}
+.whob:hover{background:rgba(255,255,255,.06)}
+.whob[aria-pressed="true"]{border-color:rgba(139,239,255,.45);background:rgba(139,239,255,.07)}
+.whob .n{font-weight:650;font-size:13px}
+.whob .r{grid-column:1/-1;font-size:11.5px;color:var(--ink-3);line-height:1.35}
+.addr{font:500 12.5px/1.3 var(--f-mono);user-select:all;-webkit-user-select:all;padding:7px 10px;border-radius:8px;background:var(--well);border:1px solid var(--hair);word-break:break-all}
+textarea.mailbody{min-height:380px;font:400 13.5px/1.6 var(--f-ui)}
+
+/* ---------- admissions ---------- */
+.waves{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;align-items:start}
+.wave{padding:16px;display:flex;flex-direction:column;gap:10px}
+.sch{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 10px;align-items:center;padding:8px 0;border-top:1px solid rgba(255,255,255,.05)}
+.sch .nm{font-size:12.5px;font-weight:600;line-height:1.3}
+.sch .od{font:600 11px/1 var(--f-mono);color:var(--ink-2)}
+.sch select{grid-column:1/-1}
+.prog{height:5px;border-radius:5px;background:rgba(255,255,255,.08);overflow:hidden}
+.prog i{display:block;height:100%;background:linear-gradient(90deg,var(--teal),var(--ice));border-radius:5px}
+.rank{display:grid;grid-template-columns:28px minmax(0,1fr) auto;gap:10px;align-items:center;padding:10px 4px;border-bottom:1px solid var(--hair)}
+.rank:last-child{border-bottom:0}
+.rank .pos{font:700 14px/1 var(--f-mono);color:var(--ink-3)}
+.rank.top .pos{color:var(--ice)}
+
+/* ---------- focus ---------- */
+.ring{position:relative;width:220px;height:220px;margin:0 auto}
+.ring svg{width:100%;height:100%;transform:rotate(-90deg)}
+.ring .lbl{position:absolute;inset:0;display:grid;place-content:center;text-align:center}
+.ring .lbl b{font:600 40px/1 var(--f-mono);letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.hab{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:10px;align-items:center;padding:8px 0;border-bottom:1px solid var(--hair)}
+.hab:last-child{border-bottom:0}
+.dots{display:flex;gap:3px}
+.dots i{width:7px;height:7px;border-radius:2px;background:rgba(255,255,255,.08)}
+.dots i.on{background:var(--teal);box-shadow:0 0 6px rgba(54,226,196,.6)}
+.streak{font:600 11px/1 var(--f-mono);color:var(--ink-3);min-width:34px;text-align:right}
+.sched{display:flex;flex-direction:column}
+.sl{display:grid;grid-template-columns:64px minmax(0,1fr);gap:12px;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.045);font-size:12.5px}
+.sl:last-child{border-bottom:0}
+.sl .tm{font:500 11px/1.5 var(--f-mono);color:var(--ink-3)}
+.sl.crit .tm,.sl.crit .ds{color:var(--crit)}
+.sl.study .ds{color:var(--ink-3)}
+
+/* ---------- sync ---------- */
+.drop{display:grid;place-items:center;text-align:center;gap:10px;padding:34px 20px;border-radius:18px;border:1.5px dashed rgba(139,239,255,.35);background:rgba(139,239,255,.04);transition:background .2s,border-color .2s}
+.drop.over{background:rgba(139,239,255,.10);border-color:var(--ice)}
+#dropOverlay{position:fixed;inset:0;z-index:90;display:grid;place-items:center;background:rgba(4,5,11,.72);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+#dropOverlay div{padding:30px 40px;border-radius:20px;border:2px dashed var(--ice);font:700 18px var(--f-ui)}
+
+/* ---------- drawer, modal, toast ---------- */
+.drawer{position:fixed;inset:0;z-index:80;display:flex;justify-content:flex-end}
+.scrim{position:absolute;inset:0;background:rgba(2,3,8,.6);-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px)}
+.drawer-panel{position:relative;width:min(640px,100%);height:100%;overflow:auto;border-radius:0;border-right:0;border-top:0;border-bottom:0;padding:calc(18px + env(safe-area-inset-top,0px)) max(20px, env(safe-area-inset-right,0px)) calc(28px + env(safe-area-inset-bottom,0px)) 20px;background:linear-gradient(160deg,rgba(18,24,44,.92),rgba(8,10,22,.94))}
+.dsec{margin-top:20px}
+.drow{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 12px;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:12.5px}
+.drow .nm{font-weight:550}
+.drow .sc{font:600 12px/1.2 var(--f-mono);text-align:right;white-space:nowrap}
+.drow .sub{grid-column:1/-1;font-size:11px;color:var(--ink-3);display:flex;gap:4px 10px;flex-wrap:wrap;align-items:center}
+.drow .cm{grid-column:1/-1;font-size:11.5px;color:var(--ink-2);background:var(--well);border:1px solid var(--hair);border-radius:8px;padding:6px 9px;line-height:1.45}
+.modal{position:fixed;inset:0;z-index:95;display:grid;place-items:center;padding:20px}
+.modal .box{position:relative;width:min(720px,100%);max-height:86vh;display:flex;flex-direction:column;gap:12px;padding:20px;background:linear-gradient(160deg,rgba(18,24,44,.96),rgba(8,10,22,.96))}
+#toast{position:fixed;left:50%;bottom:calc(22px + env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);opacity:0;z-index:100;padding:11px 16px;border-radius:12px;background:rgba(14,20,38,.92);border:1px solid var(--hair-2);border-top-color:var(--spec);font:600 13px/1.3 var(--f-ui);box-shadow:0 18px 40px -12px rgba(0,0,0,.8);transition:all .25s;pointer-events:none;max-width:calc(100% - 32px)}
+#toast.show{opacity:1;transform:translate(-50%,0)}
+#toast.ok{border-left:3px solid var(--ok)}#toast.crit{border-left:3px solid var(--crit)}
+.note{font-size:11.5px;color:var(--ink-3);line-height:1.5}
+.empty{padding:22px;text-align:center;color:var(--ink-3);font-size:13px}
+
+@media (prefers-reduced-motion:reduce){
+  .aurora{animation:none}
+  *{transition-duration:.01ms!important;scroll-behavior:auto!important}
+}
+</style>
+</head>
+<body>
+<div id="cosmos" aria-hidden="true">
+  <div class="aurora a1"></div><div class="aurora a2"></div><div class="aurora a3"></div><div class="aurora a4"></div>
+  <canvas id="stars"></canvas>
+  <div class="grain"></div>
+  <div class="vignette"></div>
+</div>
+
+<div class="shell">
+  <header class="topbar">
+    <div class="gutter"><div class="wrap topbar-in">
+      <div class="brand">
+        <canvas id="tessSmall" width="76" height="76" aria-hidden="true"></canvas>
+        <div class="minw0">
+          <div class="brand-name">Command OS</div>
+          <div class="brand-sub">Ankit Kolagotla · Skyline '27</div>
+        </div>
+      </div>
+      <nav class="tabs" role="tablist" aria-label="Sections" id="tabs"></nav>
+      <div class="status">
+        <span class="clock" id="clock">--:--</span>
+        <button class="btn sm" data-act="copyMaster" title="Copy a Markdown + JSON brief of everything for Claude or Gemini">Copy Master State</button>
+      </div>
+    </div></div>
+  </header>
+
+  <main class="gutter">
+    <div class="wrap">
+
+      <!-- COMMAND -->
+      <section class="pane" id="pane-command" data-pane="command">
+        <div class="glass deep pad-lg">
+          <div class="hero">
+            <div class="stack" style="gap:14px">
+              <div class="eyebrow" id="heroDate">--</div>
+              <h1 class="h1" id="heroHead">Loading your command center.</h1>
+              <p class="lede" id="heroLede"></p>
+              <div class="row wrapx" style="gap:8px">
+                <button class="btn primary" data-go="whatif">Open What-If Nov 1</button>
+                <button class="btn" data-act="copySSR">Copy SSR briefing packet</button>
+                <button class="btn" data-go="sync">Sync Canvas JSON</button>
+              </div>
+            </div>
+            <div class="hero-orb"><canvas id="tessBig" width="380" height="380" aria-hidden="true"></canvas></div>
+          </div>
+        </div>
+
+        <div>
+          <div class="sectitle"><span class="eyebrow">Countdowns</span><span class="note" id="syncNote"></span></div>
+          <div class="strip" id="events"></div>
+        </div>
+
+        <div class="cols">
+          <div class="s7 glass pad">
+            <div class="sectitle">
+              <div><div class="h2">Priority recovery queue</div><div class="note">Ranked by urgency and how much each item moves the course grade. Checking an item counts it in the What-If at your expected score.</div></div>
+              <button class="btn sm" data-act="loadPreset">Load Nov 1 plan</button>
+            </div>
+            <div id="queue"></div>
+          </div>
+          <div class="s5 stack" style="gap:18px">
+            <div class="glass pad" id="gpaCard"></div>
+            <div class="glass pad">
+              <div class="sectitle"><div class="h2">Courses at a glance</div><button class="btn sm ghost" data-go="courses">All courses</button></div>
+              <div id="miniCourses"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="cols">
+          <div class="s5 glass pad">
+            <div class="sectitle"><div><div class="h2" id="schedTitle">Schedule</div><div class="note" id="schedSub"></div></div></div>
+            <div class="sched" id="schedule"></div>
+          </div>
+          <div class="s7 glass pad">
+            <div class="sectitle"><div class="h2">Next 7 days</div><span class="note">From Canvas plus your milestones</span></div>
+            <div id="agenda"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- COURSES -->
+      <section class="pane" id="pane-courses" data-pane="courses" hidden>
+        <div class="sectitle">
+          <div><div class="eyebrow">7 periods + online French</div><h2 class="h1" style="font-size:clamp(24px,3vw,34px)">Courses</h2></div>
+          <div class="note" id="coursesNote"></div>
+        </div>
+        <div class="cards" id="courseCards"></div>
+      </section>
+
+      <!-- WHAT-IF -->
+      <section class="pane" id="pane-whatif" data-pane="whatif" hidden>
+        <div class="glass deep pad-lg">
+          <div class="cols" style="align-items:center">
+            <div class="s7 stack">
+              <div class="eyebrow">What-If · Nov 1 grade checkpoint</div>
+              <h2 class="h1" style="font-size:clamp(24px,3vw,36px)">Check items off. Watch the grades move.</h2>
+              <p class="lede">Every checked item counts at your expected score using each course's real Canvas category weights. Canvas scores stay the baseline, so the projection is the change your plan makes.</p>
+              <div class="row wrapx" style="gap:8px">
+                <button class="btn primary" data-act="loadPreset">Load Nov 1 recovery plan</button>
+                <button class="btn" data-act="checkWindow">Check everything due by Nov 1</button>
+                <button class="btn ghost" data-act="clearPlan">Clear all</button>
+              </div>
+            </div>
+            <div class="s5" id="wiGpa"></div>
+          </div>
+        </div>
+
+        <div class="cols">
+          <div class="s8 glass pad">
+            <div class="sectitle"><div class="h2">Canvas now vs. plan</div><div class="row xs muted" style="gap:14px"><span class="row" style="gap:6px"><i style="width:10px;height:10px;border-radius:3px;background:rgba(236,242,255,.25);display:inline-block"></i>Canvas</span><span class="row" style="gap:6px"><i style="width:10px;height:10px;border-radius:3px;background:var(--ice);display:inline-block"></i>Plan</span></div></div>
+            <div class="chartbox tall"><canvas id="wiChart" aria-label="Bar chart of each course's Canvas grade versus planned grade"></canvas></div>
+          </div>
+          <div class="s4 glass pad stack">
+            <div class="h2">Assumptions</div>
+            <label class="stack" style="gap:6px"><span class="between small"><span>Expected score on assignments</span><b class="mono" id="workOut">90%</b></span><input type="range" min="50" max="100" step="1" id="defWork" data-bind="defWork"></label>
+            <label class="stack" style="gap:6px"><span class="between small"><span>Expected score on tests, quizzes, exams</span><b class="mono" id="testOut">85%</b></span><input type="range" min="50" max="100" step="1" id="defTest" data-bind="defTest"></label>
+            <div class="between small"><span>Show items due</span><div class="seg" id="winSeg"><button data-win="nov1">Through Nov 1</button><button data-win="all">Everything</button></div></div>
+            <label class="between small" style="cursor:pointer"><span>Floor mode: count unchecked past-due work as 0</span><input type="checkbox" class="switch" id="floor" data-bind="floor"></label>
+            <label class="between small" style="cursor:pointer"><span>Include French 3A in the GPA headline</span><input type="checkbox" class="switch" id="withFrench" data-bind="withFrench"></label>
+            <p class="note" id="scaleNote"></p>
+          </div>
+        </div>
+
+        <div class="stack" id="levers"></div>
+
+        <div class="glass pad">
+          <div class="sectitle"><div><div class="h2">Add a projected assignment</div><div class="note">For tests or quizzes Canvas hasn't posted yet. They disappear on their own once Canvas lists the real one with points.</div></div></div>
+          <form id="customForm" class="row wrapx" style="gap:8px" autocomplete="off">
+            <select class="field sm" id="cfCourse" style="width:auto;min-width:150px" aria-label="Course"></select>
+            <select class="field sm" id="cfGroup" style="width:auto;min-width:150px" aria-label="Category"></select>
+            <input class="field sm" id="cfName" placeholder="Name, e.g. Unit 3 Quiz" style="flex:1;min-width:180px" aria-label="Name">
+            <input class="field sm" id="cfPts" type="number" min="1" step="1" placeholder="Points" style="width:90px" aria-label="Points">
+            <input class="field sm" id="cfDue" type="date" style="width:auto" aria-label="Due date">
+            <button class="btn sm primary" type="submit">Add</button>
+          </form>
+        </div>
+      </section>
+
+      <!-- ADMISSIONS -->
+      <section class="pane" id="pane-admissions" data-pane="admissions" hidden>
+        <div class="glass deep pad-lg">
+          <div class="sectitle" style="margin-bottom:6px">
+            <div><div class="eyebrow">ED II decision matrix · ROI comparator</div><h2 class="h1" style="font-size:clamp(24px,3vw,36px)">Where should the binding slot go?</h2></div>
+            <div class="note" style="max-width:46ch">ED II is binding, so the slot is worth admit odds times how much you want the school. Odds are your calibrated ranges. Ratings are starting points, so tune them to your own read.</div>
+          </div>
+          <div class="cols" style="margin-top:14px">
+            <div class="s7">
+              <div class="chartbox tall"><canvas id="edChart" aria-label="Bar chart comparing composite score, fit, and admit odds range for five ED II schools"></canvas></div>
+            </div>
+            <div class="s5 stack">
+              <div class="h3">Ranking</div>
+              <div id="edRank"></div>
+              <div class="stack" id="coachToggles" style="gap:8px"></div>
+            </div>
+          </div>
+        </div>
+        <div class="cols">
+          <div class="s4 glass pad stack" id="edWeights"></div>
+          <div class="s8 glass pad">
+            <div class="sectitle"><div class="h2">School ratings, 1 to 10</div><span class="note">Odds come from your ranges and the coach toggles.</span></div>
+            <div class="scrollx" id="edTable"></div>
+          </div>
+        </div>
+        <div>
+          <div class="sectitle"><div><div class="eyebrow">37 schools · 5 waves</div><div class="h2" style="margin-top:4px">Application waves</div></div><span class="note" id="waveNote"></span></div>
+          <div class="waves" id="waves"></div>
+        </div>
+      </section>
+
+      <!-- EMAIL -->
+      <section class="pane" id="pane-email" data-pane="email" hidden>
+        <div class="sectitle">
+          <div><div class="eyebrow">1-click recovery email studio</div><h2 class="h1" style="font-size:clamp(24px,3vw,34px)">Teacher and counselor emails</h2></div>
+          <div class="note" style="max-width:52ch">Drafts rebuild from your live Canvas data, so a new sync updates the missing-work lists. Edit freely; your edits stick until you reset. Read each one over before sending.</div>
+        </div>
+        <div class="mailgrid">
+          <div class="who" id="mailList"></div>
+          <div class="glass pad stack" id="mailEditor"></div>
+        </div>
+      </section>
+
+      <!-- EC -->
+      <section class="pane" id="pane-ec" data-pane="ec" hidden>
+        <div class="sectitle">
+          <div><div class="eyebrow">Research blitz · recruiting · ventures</div><h2 class="h1" style="font-size:clamp(24px,3vw,34px)">Extracurriculars</h2></div>
+        </div>
+        <div class="cols" id="ecGrid"></div>
+      </section>
+
+      <!-- FOCUS -->
+      <section class="pane" id="pane-focus" data-pane="focus" hidden>
+        <div class="cols">
+          <div class="s5 glass pad stack" id="timerCard"></div>
+          <div class="s7 stack" style="gap:18px">
+            <div class="glass pad stack" id="synthCard"></div>
+            <div class="glass pad" id="habitCard"></div>
+          </div>
+        </div>
+        <div class="cols">
+          <div class="s6 glass pad stack">
+            <div class="between"><div class="h2">Brain dump</div><span class="note" id="brainSaved"></span></div>
+            <textarea class="field" id="brain" data-bind="brain" rows="10" placeholder="Everything in your head, unfiltered. It saves as you type."></textarea>
+          </div>
+          <div class="s6 glass pad stack" id="debriefCard"></div>
+        </div>
+      </section>
+
+      <!-- SYNC -->
+      <section class="pane" id="pane-sync" data-pane="sync" hidden>
+        <div class="cols">
+          <div class="s7 glass pad-lg stack">
+            <div class="eyebrow">Canvas auto-sync importer</div>
+            <h2 class="h1" style="font-size:clamp(24px,3vw,34px)">Drop in ankit_canvas_sync_full.json</h2>
+            <p class="lede">Run your Safari bookmarklet, then drop the file here, pick it, or paste the JSON. Grades, weights, assignments, comments, announcements and modules all refresh, and your checked plan carries over.</p>
+            <div class="drop" id="dropzone">
+              <div class="mid ice">{ }</div>
+              <div class="h3">Drag the JSON file here</div>
+              <div class="row wrapx" style="gap:8px;justify-content:center">
+                <label class="btn primary" for="filePick">Choose file</label>
+                <input type="file" id="filePick" accept=".json,application/json" hidden>
+              </div>
+              <div class="note">Dropped courses (IB SL French 52920, Rocketry 39320) and the P5 TA block are always skipped.</div>
+            </div>
+            <label class="stack" style="gap:6px">
+              <span class="small muted">Or paste JSON (Cmd+V into this box imports right away)</span>
+              <textarea class="field mono" id="pasteBox" rows="4" placeholder='{"syncedAt": "...", "courses": [...]}'></textarea>
+            </label>
+            <div class="row wrapx" style="gap:8px"><button class="btn sm" data-act="importPaste">Import pasted text</button></div>
+          </div>
+          <div class="s5 stack" style="gap:18px">
+            <div class="glass pad stack" id="syncStatus"></div>
+            <div class="glass pad stack">
+              <div class="h2">Export</div>
+              <p class="note">The Master State is a Markdown brief plus compact JSON of grades, plan, habits, brain dump and EC progress, ready to paste into Claude or Gemini. The backup holds everything, including the Canvas data; paste it into the box on the left to restore on another device.</p>
+              <div class="row wrapx" style="gap:8px">
+                <button class="btn primary" data-act="copyMaster">Copy Master State</button>
+                <button class="btn" data-act="copyBackup">Copy full backup</button>
+              </div>
+            </div>
+            <div class="glass pad stack">
+              <div class="h2">Reset</div>
+              <div class="row wrapx" style="gap:8px">
+                <button class="btn sm" data-act="resetCanvas" id="btnResetCanvas">Restore Oct 18 Canvas snapshot</button>
+                <button class="btn sm danger" data-act="resetAll" id="btnResetAll">Erase everything</button>
+              </div>
+              <p class="note">Both ask for a second click to confirm.</p>
+            </div>
+          </div>
+        </div>
+        <div class="glass pad" id="diffCard" hidden></div>
+      </section>
+
+    </div>
+  </main>
+</div>
+
+<div class="drawer" id="drawer" hidden role="dialog" aria-modal="true" aria-labelledby="drawerTitle">
+  <div class="scrim" data-act="closeDrawer"></div>
+  <aside class="drawer-panel glass" id="drawerPanel"></aside>
+</div>
+
+<div class="modal" id="copyModal" hidden role="dialog" aria-modal="true" aria-label="Copy text">
+  <div class="scrim" data-act="closeModal"></div>
+  <div class="box glass">
+    <div class="between"><div class="h2">Copy this text</div><button class="btn sm" data-act="closeModal">Close</button></div>
+    <p class="note">Your browser blocked automatic copying. The text is selected; press Cmd+C or Ctrl+C.</p>
+    <textarea class="field mono" id="copyModalText" rows="16" readonly></textarea>
+  </div>
+</div>
+
+<div id="dropOverlay" hidden><div>Drop the Canvas JSON to sync</div></div>
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function(){
+'use strict';
+
+/* =====================================================================
+   Utilities
+   ===================================================================== */
+const $=(s,r=document)=>r.querySelector(s);
+const $$=(s,r=document)=>Array.from(r.querySelectorAll(s));
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const clamp=(v,a,b)=>Math.min(b,Math.max(a,v));
+const fin=n=>typeof n==='number'&&isFinite(n);
+const p2=n=>fin(n)?n.toFixed(2)+'%':'n/a';
+const p1=n=>fin(n)?n.toFixed(1)+'%':'n/a';
+const sgn=n=>fin(n)?(n>=0?'+':'')+n.toFixed(1):'';
+const pts=n=>fin(n)?(Math.round(n*100)/100).toString():'';
+const DAY=864e5;
+const MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const WD=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+const WDL=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+function parseDay(s){ if(!s||!/^\d{4}-\d{2}-\d{2}/.test(s)) return null; const [y,m,d]=s.slice(0,10).split('-').map(Number); return new Date(y,m-1,d,23,59,0); }
+function parseWhen(s){ const m=/^(\d{4})-(\d{2})-(\d{2})(?:T(\d{2}):(\d{2}))?/.exec(s||''); if(!m) return null; return new Date(+m[1],+m[2]-1,+m[3],m[4]!=null?+m[4]:23,m[5]!=null?+m[5]:59); }
+const sod=d=>new Date(d.getFullYear(),d.getMonth(),d.getDate());
+const dayDiff=(a,b)=>Math.round((sod(a)-sod(b))/DAY);
+const md=d=>`${d.getMonth()+1}/${d.getDate()}`;
+const mdy=d=>`${MON[d.getMonth()]} ${d.getDate()}`;
+function dueLabel(d){ if(!d) return 'No date'; const n=dayDiff(d,new Date()); if(n<0) return `${-n}d overdue`; if(n===0) return 'Due today'; if(n===1) return 'Due tomorrow'; if(n<7) return `Due ${WD[d.getDay()]} ${md(d)}`; return `Due ${mdy(d)}`; }
+function cd(ms){ if(ms<=0) return 'now'; const d=Math.floor(ms/DAY),h=Math.floor(ms%DAY/36e5),m=Math.floor(ms%36e5/6e4),s=Math.floor(ms%6e4/1e3); return d>0?`${d}d ${h}h ${String(m).padStart(2,'0')}m`:`${h}h ${String(m).padStart(2,'0')}m ${String(s).padStart(2,'0')}s`; }
+function dkey(d=new Date()){ return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; }
+function addDays(d,n){ const x=new Date(d); x.setDate(x.getDate()+n); return x; }
+function nextSchoolDay(from){ let d=addDays(sod(from),1); while(d.getDay()===0||d.getDay()===6) d=addDays(d,1); return d; }
+function niceDay(d){ return `${WDL[d.getDay()]} ${md(d)}`; }
+const reduceMotion=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+let toastT;
+function toast(msg,kind=''){ const el=$('#toast'); el.textContent=msg; el.className='show '+kind; clearTimeout(toastT); toastT=setTimeout(()=>{el.className='';},2800); }
+function copyText(text,label='Copied to clipboard'){
+  const fallback=()=>{ const ta=document.createElement('textarea'); ta.value=text; ta.setAttribute('readonly',''); ta.style.position='fixed'; ta.style.opacity='0'; document.body.appendChild(ta); ta.select(); let ok=false; try{ok=document.execCommand('copy');}catch(e){} ta.remove(); if(ok) toast(label,'ok'); else openCopyModal(text); };
+  try{ if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(text).then(()=>toast(label,'ok'),fallback); } else fallback(); }catch(e){ fallback(); }
+}
+function openCopyModal(text){ $('#copyModal').hidden=false; const t=$('#copyModalText'); t.value=text; setTimeout(()=>{t.focus();t.select();},40); }
+
+/* =====================================================================
+   Static data
+   ===================================================================== */
+const CANVAS='https://issaquah.instructure.com';
+const NOV1=new Date(2026,10,1,23,59);
+const EXCLUDE=new Set([52920,39320]);
+const META={
+  49442:{p:'P1',code:'CW',short:'Creative Writing',teacher:'Mrs. Cossano',full:'Mrs. Kirsten Cossano',email:'cossanok@issaquah.wednet.edu',scale:'issaquah',mail:'cw'},
+  51754:{p:'P2',code:'ECON',short:'IB Economics SL',teacher:'Mr. Hiatt',full:'Mr. Hiatt',email:'hiatta@issaquah.wednet.edu',scale:'plain',mail:'econ'},
+  51804:{p:'P3',code:'CIV',short:'Civics',teacher:'Miss Dubs',full:'Miss Dubs',email:'woffindenlueym@issaquah.wednet.edu',scale:'issaquah',mail:'civ'},
+  50870:{p:'P4',code:'MATH',short:'IB Math AA HL 2',teacher:'Mrs. Cruz',full:'Mrs. Mary Margaret Cruz',email:'cruzm@issaquah.wednet.edu',scale:'cruz',mail:'math'},
+  51596:{p:'P6',code:'BIO',short:'IB Biology HL 1',teacher:'Mrs. von Bargen',full:'Mrs. Gretel von Bargen',email:'vonbargeng@issaquah.wednet.edu',scale:'issaquah',mail:'bio'},
+  51832:{p:'P7',code:'BUS',short:'IB Business Mgmt HL',teacher:'Ms. Dineen',full:'Ms. Dineen',email:'dineena@issaquah.wednet.edu',scale:'issaquah',mail:'bus'},
+  53482:{p:'OL',code:'FR',short:'French 3A Online',teacher:'M. Chesko',full:'M. Chesko',email:'kchesko@accelerate-academy.net',scale:'issaquah',mail:'fr',online:true,sub:'Grade replacement course · mentor Kelly Albertelli'}
+};
+const ORDER=[49442,51754,51804,50870,51596,51832,53482];
+const SCALES={
+  issaquah:[[93,'A'],[90,'A-'],[87,'B+'],[83,'B'],[80,'B-'],[77,'C+'],[73,'C'],[70,'C-'],[67,'D+'],[60,'D'],[-1e9,'F']],
+  plain:[[90,'A'],[80,'B'],[70,'C'],[60,'D'],[-1e9,'F']],
+  cruz:[[90,'A'],[87,'A-'],[84,'B+'],[80,'B'],[77,'B-'],[74,'C+'],[70,'C'],[67,'C-'],[64,'D+'],[57,'D'],[-1e9,'F']]
+};
+const GP={'A':4,'A-':3.7,'B+':3.3,'B':3,'B-':2.7,'C+':2.3,'C':2,'C-':1.7,'D+':1.3,'D':1,'D-':0.7,'F':0};
+const RULES=[
+  {course:51804,match:/^1 - Unit 1 Test$/i,capPct:79,defPct:77,label:'C+ recovery rule'},
+  {course:51596,match:/^Quiz: Science of Biology$/i,capPts:31,label:'Retake max 31/35'},
+  {course:51754,match:/^warm ?up/i,noRecovery:true}
+];
+const PRESET=['1509647','1541642','1541643','1601473','1586426','1587010','1553519','1586427','1589306','1553518','1602722','1604039'];
+const PROJECTED_SEED=[
+  {id:'x-civ-u2',course:51804,gid:155280,name:'Unit 2 Test (est. 25 pts, not in Canvas yet)',possible:25,due:'2026-10-20',replacedBy:'unit 2.*test'},
+  {id:'x-bus-34',course:51832,gid:150577,name:'3.4 Quiz (est. 18 pts, Canvas lists 0)',possible:18,due:'2026-10-22',replacedBy:'^3\\.4 quiz'}
+];
+
+/* Oct 18, 2026 Canvas snapshot (from ankit_canvas_sync_full.json). Row: [id, name, groupId, due, score|null, possible, flags]
+   flags: m = missing, l = late, s = submitted awaiting grade, g = marked graded with no score yet */
+const SEED={syncedAt:'10/18/2026, 2:32:27 PM',courses:[
+ {id:49442,name:'1. Creative Writing',score:71.46,grade:'C-',w:[[148161,'Culminating',70],[151399,'Process',30]],
+  ann:[['2026-10-16','10/19-10/23','Monday: Podcast or Script assignment introduced, then Battleship. Tuesday and Wednesday: finish Battleship. Thursday and Friday: work time for the Podcast or Script.']],
+  mods:[['Literary Analysis Essay',13],['The Novel Unit',17],['Intro Unit',13]],
+  a:[[1509643,'Student Survey',151399,'2026-08-28',5,5,''],[1509639,'Artifact Story',151399,'2026-08-29',10,10,''],[1509641,'Self-One and Two',151399,'2026-09-02',10,10,''],[1509642,'Self-Story',151399,'2026-09-05',10,10,''],[1509644,'Syllabus Signature',151399,'2026-09-05',5,5,''],[1509664,'Short Story Outline',151399,'2026-09-11',10,10,''],[1509645,'Character Creation',151399,'2026-09-12',15,15,''],[1509662,'Short Story',148161,'2026-09-19',20,20,''],[1509655,'Multiple Genres Story',148161,'2026-09-26',10,20,'l'],[1509653,'Historical Vignette-Fact Sheet',151399,'2026-09-29',7.75,10,'l'],[1509651,'Historical Vignette',148161,'2026-10-03',20,20,''],[1509646,'Fairy Tale Note Sheet',151399,'2026-10-06',10,10,''],[1509649,'Fairytale Analysis',151399,'2026-10-13',5,10,''],[1509647,'Fairy Tale Rewrite',148161,'2026-10-17',0,20,'m'],[1509659,'Podcast OR Script',148161,'2026-10-29',null,20,''],[1509670,'Essay Outline',151399,'2026-11-12',null,10,''],[1509671,'Outline Works Cited Page',151399,'2026-11-13',null,5,''],[1509672,'Timed Write (independent novels)',151399,'2026-11-17',null,30,'']]},
+ {id:51754,name:'2. IB Economics',score:88.67,grade:'B',w:[[155111,'Assignments',50],[155112,'IB Internal Assess',40],[155113,'Final Exam',10]],
+  ann:[],mods:[['Ch 1-2 Foundations',2],['Ch 3 & 5 Demand and Supply',5],['Ch 4 & 6 Elasticities',1],['Ch 7 Market equilibrium',2],['Ch 8 Government intervention',2],['Ch 9 Market failure',2],['Micro IA resources',1],['DECA 2026/2027',1]],
+  a:[[1563114,'PPC And Scarcity',155111,'2026-09-04',null,10,''],[1550205,'Ch 1 Intro to econ MC',155111,'2026-09-04',10,13,''],[1550228,'Ch 1 Free write (AO2)',155111,'2026-09-10',20,20,''],[1550279,'Ch 3 Graphing',155111,'2026-09-12',25,25,''],[1550202,'Ch 3 Demand and supply reading MC quiz',155111,'2026-09-14',20,25,''],[1585837,'Warm Up 9/15',155111,'2026-09-16',5,5,''],[1550266,'Ch 2 Demand Free write',155111,'2026-09-17',20,20,''],[1587254,'Elasticities Make-up Quiz',155111,'2026-09-22',null,24,'m'],[1550287,'Ch 4 Elasticities FW reflection',155111,'2026-09-24',10,10,''],[1550303,'Ch 4 elasticities group FW (AO3 #1)',155111,'2026-09-24',20,20,''],[1591858,'PES- Exit ticket',155111,'2026-09-25',10,10,''],[1550335,'Equilibrium Worksheet 1.1 Markets, Demand, and Supply',155111,'2026-09-28',null,15,''],[1591305,'Shortage: Semiconductor Chip Market',155111,'2026-09-28',0,10,'ls'],[1550310,'Ch 7 Price mechanism free write',155111,'2026-09-30',null,20,''],[1550284,'Ch 3 quiz diagrams',155111,'2026-10-01',null,0,'m'],[1595679,'Ch 7 Equilibrium MC quiz and Canvas Graph',155111,'2026-10-02',null,15,'m'],[1550351,'PED VS PES Graph',155111,'2026-10-05',null,10,'s'],[1550319,'Ch 8 Tax application practice activity',155111,'2026-10-05',null,10,'ls'],[1600134,'Warm up 10/6-10/7',155111,'2026-10-07',0,5,''],[1599866,'Government intervention Group presentation',155111,'2026-10-08',null,20,'ls'],[1600935,'Warm up 10/8',155111,'2026-10-08',5,5,'m'],[1602427,'WARM UP 10/12',155111,'2026-10-12',5,5,''],[1550325,'Ch 9 Positive externalities worksheet',155111,'2026-10-13',null,10,'s'],[1602339,'Externalities Quiz',155111,'2026-10-13',20,20,''],[1603094,'Community/ Family interview',155111,'2026-10-14',null,10,''],[1602722,'Externalities Poster',155111,'2026-10-14',null,20,''],[1603673,'exit ticket externalities',155111,'2026-10-15',10,10,''],[1604039,'gallery walk notes',155111,'2026-10-17',null,10,'m'],[1550346,'Micro IA 2026',155112,'2026-11-17',null,100,'']]},
+ {id:51804,name:'3. Civics',score:64.35,grade:'D',w:[[155280,'Culminating',60],[155281,'Participation',15],[155282,'Classwork',25]],
+  ann:[['2026-09-14','End of Unit 1','Unit 1 is over; missing Unit 1 work was due to Canvas by 11:59 PM that Monday.']],
+  mods:[['Online Textbook',1],['Unit 2 - Institutions of American Government',16],['Unit 1 - Foundations of American Government',12],['Unit 0 - Welcome Week',1]],
+  a:[[1558784,'0.1- Syllabus Signature',155281,'2026-09-04',1,1,''],[1577211,'1- Federalism Scavenger Hunt',155282,'2026-09-04',10,10,''],[1553520,'1 - Greater Good Magazine',155282,'2026-09-07',10,10,''],[1553521,'1 - Proper Role of Govt.',155282,'2026-09-07',8.4,10,''],[1553523,'1 - US Constitution',155282,'2026-09-10',15,15,''],[1587010,'1 - Unit 1 Test',155280,'2026-09-14',17,25,''],[1553518,'1 - Annotate Understanding Tribal Treaty Rights in Western WA',155281,'2026-09-15',0,5,'m'],[1553519,'1 - Current Events',155282,'2026-09-15',0,10,'m'],[1586427,'2 - Current Events for Monday 9/21',155282,'2026-09-21',0,10,'m'],[1588145,"Lesson 3 eText: The President's Domestic Powers",155282,'2026-09-22',5,5,''],[1586428,'2 - Executive Order Research',155282,'2026-09-25',10,10,''],[1592879,'Participation 9/17-9/25',155281,'2026-09-25',0,5,''],[1589306,'2 - Current Events for Monday 9/28',155282,'2026-09-28',0,10,'m'],[1594206,'2 -Supreme Court Case Research',155282,'2026-10-02',10,10,''],[1593466,'2 - Current Events for Monday 10/5',155282,'2026-10-05',8,10,'l'],[1594205,'2- Structure Academic Controversy',155282,'2026-10-06',25,25,''],[1599713,'SAC Reflection',155281,'2026-10-09',1,1,''],[1600724,'2 - Current Events for Monday 10/12',155282,'2026-10-12',null,10,'g'],[1601554,'2- Gerrymander Game',155281,'2026-10-12',null,1,'g'],[1602717,'Participation 9/18- 10/12',155281,'2026-10-12',0,5,''],[1586426,'2 - Congressperson Research Webquest',155282,'2026-10-19',null,20,''],[1553522,'1 - Review Quiz',155281,null,5,5,'']]},
+ {id:50870,name:'4. IB HL 2 Math',score:78.62,grade:'B-',w:[[154576,'Formative',10],[154577,'Summative',90]],
+  ann:[['2026-10-09','Picture Day Rescheduled','Rained out; a new senior picture time will be scheduled once the weather cooperates.']],
+  mods:[['Ch 2: Vectors',11],['IA',8],['Ch 1: Differential Equations',6],['First Last Week',3]],
+  a:[[1561557,'Senior Time Capsule',154576,'2026-08-31',5,5,''],[1578780,'Differential Equations: Quiz 1',154577,'2026-09-04',0,6,''],[1544524,'Syllabus/Contract',154576,'2026-09-05',10,10,''],[1559417,'IB Research Form',154577,'2026-09-09',5,5,''],[1561719,'Differential Equations: Quiz 2',154577,'2026-09-15',14,23,''],[1559443,'IB Exploration -Preliminary Outline',154577,'2026-09-19',5,5,''],[1561717,'Ch 1: HW',154576,'2026-09-21',20,20,''],[1566109,'Differential Equations',154576,'2026-09-21',5,5,''],[1561720,'Ch 1: Test',154577,'2026-09-22',69,100,''],[1592239,'Senior Picture Day',154577,'2026-10-01',null,5,''],[1592826,'Vectors: HW 1',154576,'2026-10-09',null,20,'s'],[1592820,'Vectors: Quiz 1',154577,'2026-10-09',22,22,''],[1592823,'Vectors: Test 1',154577,'2026-10-13',84,100,''],[1559446,'IB Math Exploration - Peer Edit',154577,'2026-10-23',null,20,''],[1592829,'Vectors: HW 2',154576,'2026-10-24',null,20,''],[1592830,'Vectors: HW 3',154576,'2026-10-30',null,20,''],[1592824,'Vectors: Test 2',154577,'2026-10-31',null,100,''],[1592825,'Vectors: Test 3',154577,'2026-11-03',null,100,''],[1559449,'IB Exploration - First Draft',154577,'2026-11-21',null,20,''],[1559456,'IB Exploration - Final Draft',154577,'2026-12-11',null,20,'']]},
+ {id:51596,name:'6. IB Biology',score:93.3,grade:'A',w:[[150318,'Classwork',10],[152554,'Labs and Projects',30],[152547,'Test and Quizzes',60]],
+  ann:[['2026-09-30','Quiz Retake Policy','One retake per end-of-unit quiz, worth up to 88% of the points, finished before the quarter ends. Flex, Fridays after school, or before school with 24 hours notice.']],
+  mods:[['Course Logistics',26],['Observing Microscopic Life',18],['Conditions for Life',34],['Observing and Analyzing Variation',30],['The Science of Biology',37]],
+  a:[[1529918,'IKA: Science of Biology',150318,'2026-08-29',5,5,''],[1561410,'Project: Biology of Learning Group Poster',152554,'2026-08-31',null,8,'g'],[1529919,'Lab: Building Beyond the Parts',152554,'2026-09-04',8,8,''],[1529320,'IB Biology Note Template Fee Paid',150318,'2026-09-07',0,0,''],[1529912,'CFU: Levels of Biological Organization',150318,'2026-09-08',5,5,''],[1529913,'CFU: The Big and the Small',150318,'2026-09-08',5,5,''],[1529910,'CFU: Classification and Nomenclature',150318,'2026-09-10',5,5,''],[1529911,'CFU: Emergent Properties',150318,'2026-09-10',5,5,''],[1529921,'Lab: Practicing Dichotomous Keys',152554,'2026-09-10',8,8,''],[1529917,'FKA: Science of Biology',150318,'2026-09-14',5,5,''],[1529899,'1-pager: Science of Biology',150318,'2026-09-14',25,25,''],[1529935,'Quiz: Science of Biology',152547,'2026-09-14',27,35,''],[1585534,'IKA: Observing and Analzying Variation',150318,'2026-09-15',5,5,''],[1585529,'CFU: Data, Units, Conversions, Notation and Errors',150318,'2026-09-17',5,5,''],[1529321,'Lab: Measurement Uncertainty',152554,'2026-09-17',13,13,''],[1585530,'CFU: Variation as a Feature of Life',150318,'2026-09-18',5,5,''],[1588826,'Quiz: Units, Conversions, Notation and Uncertainty',152547,'2026-09-21',10,10,''],[1585538,'Lab: Sampling Bean Habitats',150318,'2026-09-22',9,10,'l'],[1585536,'Lab: Quantifying Human Variation Analysis',152554,'2026-09-25',19.5,20,''],[1592915,'FKA: Observing and Quantifying Variation',150318,'2026-09-29',5,5,''],[1592268,'Lab: Using DataClassroom to View and Analyze Variation',152554,'2026-09-29',14.5,15,'l'],[1592945,'1-pager: Observing and Analyzing Variation',150318,'2026-09-30',25,25,''],[1599106,'Quiz: Observing and Analyzing Variation',152547,'2026-09-30',37.5,40,''],[1594495,'IKA: Conditions for Life',150318,'2026-10-01',5,5,''],[1594618,'CFU: Biological Role and Origin of Water on Earth',150318,'2026-10-02',5,5,''],[1594791,'Project: History of Life on Earth Timeline',152554,'2026-10-05',null,10,''],[1596155,'CFU: Miller Urey',150318,'2026-10-08',5,5,''],[1599181,'Project: Modeling the Formation of Protocells',152554,'2026-10-08',10,10,'l'],[1599179,'CFU: Steps in the Origins of Protocells',150318,'2026-10-09',5,5,''],[1599239,'CFU: Evidence for LUCA',150318,'2026-10-13',5,5,''],[1599315,'FKA: Conditions for Life',150318,'2026-10-15',5,5,''],[1599287,'1-pager: Conditions for Life',150318,'2026-10-15',25,25,''],[1603735,'IKA: Observing Microscopic Life',150318,'2026-10-16',5,5,''],[1604183,'CFU: Cells as Life',150318,'2026-10-19',null,5,''],[1604068,'Notes: Structures Common to All Cells (A2.2.4)',150318,'2026-10-19',null,0,''],[1604914,'CFU: Microscope Basics',150318,'2026-10-22',null,5,''],[1604876,'CFU: Processes of Life',150318,'2026-10-22',null,5,''],[1604969,"Lab: Letter 'e' Magnification",152554,'2026-10-22',null,6,''],[1604977,'Lab: Observing Single Celled Organisms',152554,'2026-10-23',null,16,''],[1604910,'Notes: Microscopy Skills (A2.2.2)',150318,'2026-10-23',null,0,''],[1529322,'Q1 Binder Check',150318,'2026-10-29',null,75,''],[1529318,'A&B Weekly Options',150318,'2026-10-30',20,0,''],[1529324,'Test: Q1 Cumulative',152547,'2026-10-30',null,60,'']]},
+ {id:51832,name:'7. IB Business',score:83.75,grade:'B',w:[[150577,'Assignments',60],[155322,'DECA Portfolio',30],[155323,'Final',10]],
+  ann:[],mods:[['Course resources',9],['Unit 1 Introduction to Business',12],['Unit 3 Finance',9],['DECA',5]],
+  a:[[1541642,'Business Card Intro Assignment',150577,'2026-09-04',0,15,'m'],[1581549,'Dyson Article- Chapter 1 Review',150577,'2026-09-08',20,20,''],[1541934,'Chapter 1 Test',150577,'2026-09-12',14.333333333333334,18,''],[1585728,'Investigate a Social Enterprise',150577,'2026-09-15',15,15,''],[1589541,'STEEPLE Expansion Analysis',150577,'2026-09-25',20,20,''],[1541643,'DECA Event Checkpoint #1',155322,'2026-09-29',null,15,'ls'],[1594448,'Costs and Revenues Poster Review',150577,'2026-10-01',5,5,''],[1596057,'3.1-3.3 Assignment Pack',150577,'2026-10-02',10,10,''],[1596076,'Finance and Accounts: 3.1 - 3.3 Quiz (HL)',150577,'2026-10-05',17,18,''],[1601473,'DECA Event Checkpoint #2',155322,'2026-10-13',null,10,'s'],[1605014,'3.4 Quiz',150577,'2026-10-22',null,0,'']]},
+ {id:53482,name:'Fall 26 - French 3 A - OL - PT',score:5.05,grade:'F',w:[[157963,'Assignments',20],[157964,'Quizzes',25],[157965,'Exams',40],[157966,'Semester Exam',15]],
+  ann:[['2026-10-18','A Couple of Reminders','Live sync session Monday 10/19 at 3:30 PM PT on the passé composé. One week before each module exam, request the study guide through the Canvas message center.']],
+  mods:[['Module 1: La géographie',0],['Module 2: Gouvernement et politique',0],['Module 3: La bouffe',0],['Module 5: La vie quotidienne',0]],
+  a:[[1575315,'La carte Quiz',157964,'2026-10-07',5,5,''],[1575411,'Les préférences et la nature Fluency Check',157963,'2026-10-07',0,12,'m'],[1575403,'Les activités dans différents endroits Speaking Assignment',157963,'2026-10-08',0,16,'m'],[1575253,'Les caractéristiques du terrain Quiz',157964,'2026-10-08',0,5,'m'],[1575218,'Les activités culturelles Quiz',157964,'2026-10-09',0,5,'m'],[1575276,'Les activités physiques Quiz',157964,'2026-10-09',0,5,'m'],[1575358,'Apprécier Paris Quiz',157964,'2026-10-10',0,5,'m'],[1575395,'La description Fluency Check',157963,'2026-10-10',0,12,'m'],[1575288,'Le temps Listening Assignment',157963,'2026-10-13',0,5,'m'],[1575279,'Le temps Quiz',157964,'2026-10-13',0,5,'m'],[1575208,'Les phénomènes climatiques Quiz',157964,'2026-10-13',0,5,'m'],[1575385,'Des métaphores et expressions - Writing Assignment',157963,'2026-10-14',0,16,'m'],[1575248,'Les expressions idiomatiques Quiz',157964,'2026-10-14',0,5,'m'],[1575413,'Les solutions Fluency Check',157963,'2026-10-14',0,12,'m'],[1575299,'Le réchauffement climatique Quiz',157964,'2026-10-15',0,5,'m'],[1575418,'Module 1 Journal Submission',157963,'2026-10-15',0,30,'m'],[1575232,'Les différents gouvernements Listening Assignment',157963,'2026-10-16',0,5,'m'],[1575333,'Les différents gouvernements Quiz',157964,'2026-10-17',0,5,'m'],[1575320,'Un commerce en France Quiz',157964,'2026-10-17',0,5,'m'],[1575309,'Donner son avis Quiz',157964,'2026-10-20',null,5,''],[1575410,'Les opinions variées - Fluency Check',157963,'2026-10-20',null,12,''],[1575401,"Les 5 W's pour raconter l'histoire - Writing Assignment",157963,'2026-10-21',null,16,''],[1575431,"Savoir parler d'architecture - Fluency Check",157963,'2026-10-21',null,12,''],[1575345,"L'Histoire Quiz",157964,'2026-10-22',null,5,''],[1575365,'Les célébrités du passé Quiz',157964,'2026-10-22',null,5,''],[1575343,'Les célébrités du présent Quiz',157964,'2026-10-22',null,5,''],[1575285,'Les drapeaux et couleurs Quiz',157964,'2026-10-23',null,5,''],[1575408,'Les messages cachés - Fluency Check',157963,'2026-10-23',null,12,''],[1575213,"Rapport après l'écoute Quiz",157964,'2026-10-23',null,5,''],[1575256,'Rapport après la lecture Quiz',157964,'2026-10-24',null,5,''],[1575432,'Savoir rapporter oralement la presse écrite - Speaking Assignment',157963,'2026-10-24',null,16,''],[1575420,'Module 2 Journal Submission',157963,'2026-10-27',null,30,''],[1575312,'Je mange Quiz',157964,'2026-10-28',null,5,''],[1575226,'Les ingrédients Quiz',157964,'2026-10-28',null,5,''],[1575242,'Module 1 & 2 Exam',157965,'2026-10-28',null,32,''],[1575293,'Les outils essentiels Quiz',157964,'2026-10-29',null,5,''],[1575416,'Ma cuisine de rêve - Speaking Assignment',157963,'2026-10-29',null,16,''],[1575388,'Faire les courses - Fluency Check',157963,'2026-10-30',null,12,''],[1575197,'Savoir préparer un plat Quiz',157964,'2026-10-30',null,5,'']]}
+]};
+const SEED_COMMENTS={
+  1561720:'[Mary Margaret Cruz]: R-40',
+  1559443:'[Mary Margaret Cruz]: Is your investigation focused enough on one event and one clearly defined time window? Have you clearly explained abnormal return, the decay model, and the meaning of the integral? How will you justify that the exponential model is suitable before using its derivative and integral?',
+  1509655:"[Ankit Kolagotla]: Sorry for being so late on this assignment. I have been getting overwhelmed by college applications recently, but this won't happen again.",
+  1588826:'[Gretel vonBargen]: retake #1 and retake #2 completed',
+  1585538:'[Gretel vonBargen]: Absent for analysis. Please complete individually. Actual population = 250 beans.',
+  1592268:'[Gretel vonBargen]: Part 5 #5 This is high variability, low precision, low reliability. Otherwise great job!',
+  1529318:'[Gretel vonBargen]: week 2 X2 | week 7 X2',
+  1529899:'[Gretel vonBargen]: absent',
+  1594206:'[Ankit Kolagotla]: Noted a few spelling errors after submitting.'
+};
+
+const EVENTS=[
+  {t:'2026-10-19T08:00',l:'Counselor SSR briefing',k:'crit'},
+  {t:'2026-10-19T23:59',l:'Civics Congressperson Webquest due',k:'warn'},
+  {t:'2026-10-19T15:30',l:'French sync session: passé composé',k:'violet'},
+  {t:'2026-10-20T10:05',l:'Civics Unit 2 Test (Tue/Wed)',k:'crit'},
+  {t:'2026-10-21T23:59',l:'Request French Module 1 & 2 study guide',k:'warn'},
+  {t:'2026-10-22T08:00',l:'Business 3.4 Quiz on paper',k:'warn'},
+  {t:'2026-10-23T23:59',l:'Math IA first draft for Peer Edit',k:'warn'},
+  {t:'2026-10-28T08:00',l:'Wave 1 opens: KU + ASU',k:'ice'},
+  {t:'2026-10-28T23:59',l:'French Module 1 & 2 Exam',k:'crit'},
+  {t:'2026-10-29T23:59',l:'Bio Q1 Binder Check',k:'warn'},
+  {t:'2026-10-30T08:00',l:'Bio Q1 Cumulative Test',k:'warn'},
+  {t:'2026-10-31T23:59',l:'Harvard Presentation Round 1',k:'violet'},
+  {t:'2026-10-31T23:59',l:'Math Vectors Test 2',k:'warn'},
+  {t:'2026-11-01T23:59',l:'Nov 1 grade checkpoint',k:'crit'},
+  {t:'2026-11-05T23:59',l:'Counselor report for UW (Nov 1 grades)',k:'ice'},
+  {t:'2026-11-10T08:00',l:'Wave 3: UW Seattle window',k:'ice'},
+  {t:'2026-11-17T23:59',l:'Econ Micro IA (40% of grade)',k:'warn'}
+];
+
+const ED_SCHOOLS=[
+  {id:'bentley',name:'Bentley',prog:'Finance / Business',div:'D2',lo:45,hi:55},
+  {id:'syr',name:'Syracuse Whitman',prog:'Finance',div:'D1',lo:40,hi:50},
+  {id:'den',name:'Denison',prog:'Financial Economics',div:'D3',lo:35,hi:45,clo:55,chi:70},
+  {id:'cwru',name:'Case Western Weatherhead',prog:'Business / Econ',div:'D3',lo:4,hi:6.5,clo:30,chi:45},
+  {id:'bab',name:'Babson',prog:'Business',div:'D3',lo:3.5,hi:5,clo:25,chi:40}
+];
+const ED_CRIT=[
+  {id:'odds',name:'Admit odds',auto:true},
+  {id:'prog',name:'Finance and econ program'},
+  {id:'out',name:'Career outcomes'},
+  {id:'cost',name:'Net cost fit'},
+  {id:'soc',name:'Soccer pathway'},
+  {id:'camp',name:'Campus and location fit'}
+];
+const ED_R0={bentley:{prog:9,out:9,cost:5,soc:3,camp:7},syr:{prog:8,out:8,cost:5,soc:2,camp:7},den:{prog:7,out:7,cost:7,soc:9,camp:6},cwru:{prog:8,out:8,cost:6,soc:9,camp:7},bab:{prog:9,out:9,cost:5,soc:9,camp:7}};
+
+const WAVES=[
+  {n:1,when:'Oct 28 to 30',title:'Formula direct safeties',s:[['ku','KU Business Direct','100% assured','Formula 6.08 vs. 5.55 needed'],['asu','ASU W.P. Carey, BS Finance','95%+ assured','25+ ACT']]},
+  {n:2,when:'Oct 30 to Nov 1',title:'Q1 rolling and priority',s:[['psu','Penn State University Park','32 to 40%',''],['pitt','University of Pittsburgh','38 to 46%','']]},
+  {n:3,when:'Nov 10 to 12',title:'In-state priority',s:[['uw','UW Seattle, CAS Pre-Social Sci (Econ)','18 to 25%','Nov 5 counselor report on Nov 1 grades, 250w Challenges, 300w Additional Info']]},
+  {n:4,when:'Nov 20 to Dec 20',title:'Texas and Canada base',s:[['tamu','Texas A&M Economics','28 to 35%','Submit Nov 20 to 22'],['western','Western University BMOS / Econ','30 to 38%','Dec 8'],['queens',"Queen's Economics",'28 to 36%','Dec 8'],['uoft','University of Toronto Economics','15 to 22%','Dec 8'],['ubc','UBC Economics','18 to 25%','Dec 15 to 20']]},
+  {n:5,when:'Dec 28 to Jan 22',title:'Common App ED II and RD, US direct, UK and EU',s:[['bentley','Bentley (ED II contender)','ED II 45 to 55%','D2'],['syr','Syracuse Whitman (ED II contender)','ED II 40 to 50%','D1'],['den','Denison Financial Econ (ED II contender)','ED II 35 to 45%','55 to 70% with D3 coach'],['cwru','Case Western Weatherhead (ED II contender)','ED II 4 to 6.5%','30 to 45% with D3 coach'],['bab','Babson (ED II contender)','ED II 3.5 to 5%','25 to 40% with D3 coach'],['wake','Wake Forest','',''],['neu','Northeastern','',''],['brandeis','Brandeis','','D3'],['fordham','Fordham Gabelli','',''],['bc','Boston College','',''],['roch','Rochester','','D3'],['scu','Santa Clara Leavey','',''],['dick','Dickinson','','D3'],['suffolk','Suffolk','',''],['umass','UMass Amherst','',''],['osu','Ohio State','',''],['uo','University of Oregon','',''],['nyu','NYU','',''],['will','Willamette','','D3'],['iu','Indiana Bloomington','',''],['rut','Rutgers','',''],['lsu','LSU','',''],['wsu','WSU','',''],['gla','University of Glasgow','','UCAS'],['man','University of Manchester','','UCAS'],['ie','IE University (Spain)','',''],['esade','Esade (Spain)','','']]}
+];
+const WAVE_ST=['Not started','Drafting','Ready to submit','Submitted'];
+
+const HABITS=[['wake','5:15 wake-up'],['cond','Core, hill sprints, ball mastery'],['cold','Cold shower'],['deep','Morning deep work block'],['train','Soccer practice or 25m turf'],['debrief','Nightly debrief'],['sleep','11:30 PM sleep lock']];
+const COACH_SCHOOLS=[['cwru','Case Western'],['den','Denison'],['roch','Rochester'],['brandeis','Brandeis'],['bab','Babson'],['dick','Dickinson']];
+const COACH_ST=['Not contacted','Emailed','Replied','Call or visit','Pre-read support'];
+
+/* =====================================================================
+   State
+   ===================================================================== */
+const KEY='ankit-command-os.v1';
+function defaultState(){
+  return {
+    v:1,tab:'command',canvas:null,lastImport:null,lastDiff:null,
+    plan:{},defaults:{work:90,test:85},floor:false,win:'nov1',withFrench:false,
+    custom:JSON.parse(JSON.stringify(PROJECTED_SEED)),open:{'53482':false},
+    habits:{},brain:'',debrief:{},soccer:{},
+    ec:{harvard:[['Lock the topic and a one-line thesis',false],['Outline: hook, three points, close',false],['Write the speaker script',false],['Build the slides',false],['Three timed run-throughs',false],['Record and submit Round 1',false]],
+        r1:{pct:55,sent:0,replied:0,next:''},r2:{pct:35,sent:0,replied:0,next:''},
+        reel:{clip:false,cut:false,upload:false,link:''},
+        coaches:{cwru:0,den:0,roch:0,brandeis:0,bab:0,dick:0},
+        kfc:'',biz:{goal:8000,booked:0,notes:''}},
+    ed:{w:{odds:9,prog:7,out:7,cost:5,soc:4,camp:4},r:JSON.parse(JSON.stringify(ED_R0)),coach:{den:false,cwru:false,bab:false}},
+    waves:{},mail:{edits:{},sent:{},cName:'',cEmail:'',sel:'civ'},
+    focus:{preset:'50/10',g:15,b:35,task:''}
+  };
+}
+function deepMerge(base,over){
+  if(over===undefined) return base;
+  if(Array.isArray(base)||Array.isArray(over)) return over;
+  if(base&&typeof base==='object'&&over&&typeof over==='object'){ const o={...base}; for(const k of Object.keys(over)) o[k]=deepMerge(base[k],over[k]); return o; }
+  return over;
+}
+let state=defaultState();
+try{ const raw=localStorage.getItem(KEY); if(raw) state=deepMerge(defaultState(),JSON.parse(raw)); }catch(e){}
+let saveT;
+function save(){ clearTimeout(saveT); saveT=setTimeout(()=>{ try{ localStorage.setItem(KEY,JSON.stringify(state)); }catch(e){} },160); }
+
+/* =====================================================================
+   Canvas data: normalize, hydrate
+   ===================================================================== */
+function seedRaw(){
+  return {syncedAt:SEED.syncedAt,courses:SEED.courses.map(c=>({
+    id:c.id,name:c.name,score:c.score,grade:c.grade,
+    weights:c.w.map(([id,name,weight])=>({id,name,weight})),
+    announcements:c.ann.map(([date,title,body])=>({date,title,body})),
+    modules:c.mods.map(([name,count])=>({name,count})),
+    assignments:c.a.map(([id,name,gid,due,score,possible,f])=>({
+      id,name,groupId:gid,due:due||'No Date',score:score==null?'ungraded':score,possible,
+      missing:f.includes('m'),late:f.includes('l'),
+      status:f.includes('s')?'submitted':(score!=null||f.includes('g'))?'graded':'unsubmitted',
+      comments:SEED_COMMENTS[id]||'',instructions:'',url:`${CANVAS}/courses/${c.id}/assignments/${id}`}))
+  }))};
+}
+function num(v){ if(typeof v==='number') return isFinite(v)?v:null; if(v==null||v===''||v==='ungraded') return null; const n=+v; return isFinite(n)?n:null; }
+function normalize(raw){
+  if(!raw||!Array.isArray(raw.courses)) throw new Error('No courses list found in that JSON. Use the file your bookmarklet saves.');
+  const out={syncedAt:String(raw.syncedAt||''),courses:[]};
+  for(const c of raw.courses){
+    const id=+c.id; if(!id||EXCLUDE.has(id)) continue;
+    const name=String(c.name||'').trim();
+    if(!META[id]&&/\bTA\b|teacher'?s?\s*assist|accounting/i.test(name)) continue;
+    out.courses.push({
+      id,name,score:num(c.score),grade:c.grade?String(c.grade).trim():'',
+      weights:(c.weights||[]).map(w=>({id:+w.id,name:String(w.name||'').trim(),weight:+w.weight||0})),
+      announcements:(c.announcements||[]).slice(0,4).map(n=>({date:String(n.date||''),title:String(n.title||'').trim(),body:String(n.body||'').slice(0,700)})),
+      modules:(c.modules||[]).map(m=>({name:String(m.name||'').trim(),count:Array.isArray(m.items)?m.items.length:(+m.count||0)})),
+      assignments:(c.assignments||[]).map(a=>({
+        id:a.id,name:String(a.name||'').trim(),gid:+a.groupId,
+        dueStr:(typeof a.due==='string'&&/^\d{4}-\d{2}-\d{2}/.test(a.due))?a.due.slice(0,10):null,
+        score:num(a.score),possible:+a.possible||0,missing:!!a.missing,late:!!a.late,
+        status:String(a.status||'unsubmitted'),comments:String(a.comments||'').slice(0,600),
+        instr:String(a.instructions||'').slice(0,700),url:String(a.url||'')
+      }))
+    });
+  }
+  if(!out.courses.length) throw new Error('The JSON parsed, but none of its courses match your schedule.');
+  return out;
+}
+let DATA=null;
+function shortCode(n){ return n.replace(/^\d+\.\s*/,'').split(/\s+/).map(w=>w[0]).join('').slice(0,4).toUpperCase(); }
+function loadData(){
+  const src=state.canvas||normalize(seedRaw());
+  DATA=JSON.parse(JSON.stringify(src));
+  for(const c of DATA.courses){
+    c.meta=META[c.id]||{p:'+',code:shortCode(c.name),short:c.name.replace(/^\d+\.\s*/,''),teacher:'',full:'',email:'',scale:'issaquah'};
+    for(const a of c.assignments) a.due=parseDay(a.dueStr);
+  }
+  const oi=id=>{ const i=ORDER.indexOf(id); return i<0?99:i; };
+  DATA.courses.sort((a,b)=>oi(a.id)-oi(b.id));
+}
+const courses=()=>DATA.courses;
+const C=id=>DATA.courses.find(c=>c.id===+id);
+
+/* =====================================================================
+   Grade engine (Canvas weighted-category rules)
+   ===================================================================== */
+function projectedReplaced(c,x){ if(!x.replacedBy) return false; const re=new RegExp(x.replacedBy,'i'); return c.assignments.some(a=>re.test(a.name)&&a.possible>0); }
+function items(c){
+  const proj=state.custom.filter(x=>+x.course===c.id&&!projectedReplaced(c,x)).map(x=>({id:x.id,name:x.name,gid:+x.gid,dueStr:x.due,due:parseDay(x.due),score:null,possible:+x.possible||0,missing:false,late:false,status:'unsubmitted',projected:true,comments:'',instr:'',url:''}));
+  return c.assignments.concat(proj);
+}
+const ruleFor=(c,a)=>RULES.find(r=>r.course===c.id&&r.match.test(a.name));
+const isAwaiting=a=>a.score==null&&(a.status==='submitted'||a.status==='pending_review'||a.status==='graded');
+function kind(c,a){
+  if(a.score!=null){ if(a.score===0&&a.possible>0) return a.status==='submitted'?'regrade':'zero'; return 'graded'; }
+  if(isAwaiting(a)) return 'awaiting';
+  if(a.missing) return 'missing';
+  if(a.due&&a.due<new Date()) return 'overdue';
+  if(!a.due) return 'nodate';
+  return 'upcoming';
+}
+function capPct(c,a){ const r=ruleFor(c,a); if(!r) return 100; if(r.capPts) return r.capPts/a.possible*100; return r.capPct||100; }
+function isTesty(c,a){ if(/test|quiz|exam/i.test(a.name)) return true; const g=c.weights.find(w=>w.id===a.gid); return !!(g&&/test|quiz|exam/i.test(g.name)); }
+function defPct(c,a){ const r=ruleFor(c,a); if(r&&(r.capPts||r.capPct)) return Math.round(Math.min(capPct(c,a),r.defPct||capPct(c,a))*100)/100; return isTesty(c,a)?state.defaults.test:state.defaults.work; }
+function pctFor(c,a){ const pl=state.plan[String(a.id)]; const v=pl&&fin(pl.pct)?pl.pct:defPct(c,a); return clamp(v,0,capPct(c,a)); }
+function inWindow(a){ return state.win==='all'||!a.due||a.due<=NOV1; }
+function isLever(c,a){
+  const r=ruleFor(c,a); if(r&&r.noRecovery) return false;
+  if(!(a.possible>0)) return false;
+  const k=kind(c,a);
+  if(k==='graded') return !!(r&&(r.capPts||r.capPct)&&a.score<a.possible*capPct(c,a)/100-1e-9);
+  if(k==='nodate') return false;
+  if(k==='upcoming') return inWindow(a);
+  return true;
+}
+function groupsOf(c,plan,floor){
+  const m=new Map(); c.weights.forEach(w=>m.set(w.id,{id:w.id,name:w.name,w:w.weight,e:0,p:0}));
+  const now=Date.now();
+  for(const a of items(c)){
+    let s=a.score; const p=a.possible;
+    const pl=plan&&plan[String(a.id)];
+    if(pl&&pl.on&&isLever(c,a)) s=p*pctFor(c,a)/100;
+    else if(s==null){ if(floor&&p>0&&!a.projected&&a.due&&a.due.getTime()<now&&!isAwaiting(a)) s=0; else continue; }
+    let g=m.get(a.gid); if(!g){ g={id:a.gid,name:'Other',w:0,e:0,p:0}; m.set(a.gid,g); }
+    g.e+=s; g.p+=p;
+  }
+  return [...m.values()];
+}
+function calcRaw(c,plan,floor){
+  const gs=groupsOf(c,plan,floor); const anyW=gs.some(g=>g.w>0);
+  let acc=0,ws=0,E=0,P=0;
+  for(const g of gs){ E+=g.e; P+=g.p; if(g.p>0&&g.w>0){ acc+=g.w*g.e/g.p; ws+=g.w; } }
+  if(anyW) return ws?acc/ws*100:null;
+  return P?E/P*100:null;
+}
+function proj(c){
+  const base=calcRaw(c,null,false);
+  const now=c.score!=null?c.score:base;
+  const plan=calcRaw(c,state.plan,state.floor);
+  let p;
+  if(plan==null) p=now; else if(base==null||now==null) p=plan; else p=now+(plan-base);
+  return {now,plan:p==null?null:clamp(p,0,150),base,drift:(base!=null&&c.score!=null)?Math.abs(base-c.score):0};
+}
+function gainOne(c,a,base){ const pl={}; pl[String(a.id)]={on:true}; const v=calcRaw(c,pl,false); return (v==null||base==null)?0:v-base; }
+function letterOf(c,pct){ if(!fin(pct)) return 'n/a'; const sc=SCALES[(c.meta&&c.meta.scale)||'issaquah']||SCALES.issaquah; for(const [cut,l] of sc) if(pct>=cut-1e-9) return l; return 'F'; }
+const curLetter=c=>c.grade||letterOf(c,c.score);
+function gpa(withFrench){
+  const list=courses().filter(c=>META[c.id]&&(withFrench||c.id!==53482));
+  if(!list.length) return {now:null,plan:null};
+  let n=0,p=0;
+  for(const c of list){ const pr=proj(c); n+=GP[curLetter(c)]??0; p+=GP[letterOf(c,pr.plan)]??0; }
+  return {now:n/list.length,plan:p/list.length,count:list.length};
+}
+function status(pct){ if(!fin(pct)) return ['n/a','']; if(pct>=90) return ['Locked','ok']; if(pct>=80) return ['Push','ice']; if(pct>=70) return ['Recover','warn']; return ['Critical','crit']; }
+const lcolor=l=>/^A/.test(l)?'var(--ok)':/^B/.test(l)?'var(--ice)':/^C/.test(l)?'var(--warn)':'var(--crit)';
+
+function kindPill(c,a){
+  const k=kind(c,a); const r=ruleFor(c,a);
+  if(k==='graded'&&r&&(r.capPts||r.capPct)) return `<span class="pill violet">${esc(r.label)}</span>`;
+  return ({zero:'<span class="pill crit">Missing · 0</span>',missing:'<span class="pill crit">Missing</span>',overdue:'<span class="pill warn">Not turned in</span>',regrade:'<span class="pill warn">Scored 0 after submit</span>',awaiting:'<span class="pill ice">Awaiting grade</span>',upcoming:`<span class="pill">${esc(dueLabel(a.due))}</span>`,nodate:'<span class="pill">No date</span>',graded:'<span class="pill ok">Graded</span>'})[k]||'';
+}
+function groupName(c,gid){ const g=c.weights.find(w=>w.id===gid); return g?g.name:''; }
+function needsAction(c){ return items(c).filter(a=>a.possible>0&&['zero','missing','overdue','regrade'].includes(kind(c,a))&&!(ruleFor(c,a)||{}).noRecovery); }
+
+/* =====================================================================
+   Priority queue
+   ===================================================================== */
+function buildQueue(){
+  const rows=[]; const now=new Date();
+  for(const c of courses()){
+    const base=calcRaw(c,null,false); if(base==null) continue;
+    const levers=items(c).filter(a=>isLever(c,a));
+    const bundleable=levers.filter(a=>['zero','missing'].includes(kind(c,a))&&!ruleFor(c,a));
+    const doBundle=bundleable.length>6;
+    const sev=c.score!=null&&c.score<70?1:(c.score!=null&&c.score<80?.5:0);
+    for(const a of levers){
+      if(doBundle&&bundleable.includes(a)) continue;
+      const k=kind(c,a); const days=a.due?dayDiff(a.due,now):99;
+      if(k==='upcoming'&&days>10) continue;
+      const g=gainOne(c,a,base);
+      const urg=k==='upcoming'?(days<=1?2.2:days<=3?1.5:days<=7?.9:.4):(k==='awaiting'||k==='regrade'?.9:1.6);
+      rows.push({c,a,k,g,score:urg+Math.min(Math.max(g,0),8)/2+sev});
+    }
+    if(doBundle){
+      const pl={}; bundleable.forEach(a=>pl[String(a.id)]={on:true});
+      const g=calcRaw(c,pl,false)-base;
+      rows.push({c,bundle:bundleable,k:'bundle',g,score:1.6+Math.min(g,8)/2+sev});
+    }
+  }
+  rows.forEach(r=>{ if(r.c.id===53482&&!state.withFrench) r.score-=1.2; });
+  rows.sort((x,y)=>y.score-x.score);
+  const per={}; const top=[], rest=[];
+  for(const r of rows){ per[r.c.id]=(per[r.c.id]||0)+1; (per[r.c.id]<=3?top:rest).push(r); }
+  return top.concat(rest);
+}
+function actionText(r){
+  const t=r.c.meta.teacher||'the teacher';
+  if(r.k==='bundle') return `${r.bundle.length} auto-zeroed items · clear 2 to 3 a day`;
+  const rule=ruleFor(r.c,r.a);
+  if(r.k==='graded'&&rule) return `${rule.label} · now ${pts(r.a.score)}/${pts(r.a.possible)}`;
+  return ({awaiting:`Submitted · ask ${t} to grade`,regrade:`Scored 0 after you submitted · ask ${t} to check`,zero:'Turn it in late for credit',missing:'Missing · turn it in',overdue:'Past due and not turned in',upcoming:'Get ahead of it'})[r.k]||'';
+}
+
+/* =====================================================================
+   Tabs
+   ===================================================================== */
+const TABS=[['command','Command'],['courses','Courses'],['whatif','What-If'],['admissions','Admissions'],['email','Email Studio'],['ec','ECs'],['focus','Focus'],['sync','Sync']];
+function renderTabs(){
+  $('#tabs').innerHTML=TABS.map(([id,l],i)=>`<button class="tab" role="tab" id="tab-${id}" aria-controls="pane-${id}" aria-selected="${state.tab===id}" data-tab="${id}">${id==='whatif'&&courses().some(c=>c.id===51804&&c.score<70)?'<span class="dot" aria-hidden="true"></span>':''}${l}<span class="k">${i+1}</span></button>`).join('');
+}
+function setTab(id,push=true){
+  if(!TABS.some(t=>t[0]===id)) id='command';
+  state.tab=id; save();
+  $$('[data-pane]').forEach(p=>p.hidden=p.dataset.pane!==id);
+  $$('.tab').forEach(t=>t.setAttribute('aria-selected',String(t.dataset.tab===id)));
+  if(push){ try{ history.replaceState(null,'','#'+id); }catch(e){} }
+  renderPane(id);
+  window.scrollTo({top:0,behavior:reduceMotion?'auto':'smooth'});
+}
+function renderPane(id){
+  ({command:renderCommand,courses:renderCourses,whatif:renderWhatIf,admissions:renderAdmissions,email:renderEmail,ec:renderEC,focus:renderFocus,sync:renderSync})[id]();
+}
+function refresh(){ renderTabs(); renderPane(state.tab); save(); }
+
+/* =====================================================================
+   COMMAND
+   ===================================================================== */
+function nextEvent(){ const now=Date.now(); return EVENTS.map(e=>({...e,d:parseWhen(e.t)})).filter(e=>e.d&&e.d.getTime()>now).sort((a,b)=>a.d-b.d); }
+function renderCommand(){
+  const now=new Date(); const g=gpa(false); const gf=gpa(true);
+  const ev=nextEvent(); const first=ev[0];
+  $('#heroDate').textContent=`${WDL[now.getDay()]} · ${MON[now.getMonth()]} ${now.getDate()}, ${now.getFullYear()} · Klahanie`;
+  $('#heroHead').innerHTML=first?`${esc(first.l)} in <span class="ice mono" data-cd="${first.d.getTime()}">${cd(first.d-now)}</span>.`:'All countdowns are clear.';
+  const civ=C(51804); const worst=courses().filter(c=>META[c.id]&&c.id!==53482).sort((a,b)=>(a.score??999)-(b.score??999))[0];
+  const target=worst||civ;
+  const checked=Object.values(state.plan).filter(p=>p&&p.on).length;
+  $('#heroLede').innerHTML=target?`${esc(target.meta.short)} at <b>${p2(target.score)}</b> is the biggest lever before Nov 1. ${checked?`Your ${checked} checked item${checked>1?'s':''} move the 6-course GPA from <b class="mono">${g.now.toFixed(2)}</b> to <b class="mono ice">${g.plan.toFixed(2)}</b>.`:`Load the Nov 1 plan to see how far the GPA can move from <b class="mono">${g.now.toFixed(2)}</b>.`}`:'';
+  $('#syncNote').textContent=`Canvas data: ${DATA.syncedAt||'unknown'}${state.canvas?'':' (Oct 18 snapshot)'}`;
+
+  $('#events').innerHTML=ev.slice(0,10).map(e=>`<div class="evt ${e.k}"><div class="eyebrow">${WD[e.d.getDay()]} ${md(e.d)}${e.t.includes('T')&&!/23:59/.test(e.t)?' · '+e.d.toLocaleTimeString([], {hour:'numeric',minute:'2-digit'}):''}</div><div class="t" data-cd="${e.d.getTime()}">${cd(e.d-now)}</div><div class="l">${esc(e.l)}</div></div>`).join('')||'<div class="empty">No upcoming countdowns.</div>';
+
+  renderQueue();
+  $('#gpaCard').innerHTML=gpaBlock(g,gf,true);
+  $('#miniCourses').innerHTML=courses().map(c=>{ const pr=proj(c); const col=lcolor(curLetter(c)); const w=clamp(pr.now||0,0,100), pw=clamp(pr.plan||0,0,100);
+    return `<div class="mini"><span class="code">${esc(c.meta.code)}</span><div class="track" title="Canvas ${p2(pr.now)} · plan ${p2(pr.plan)}"><u style="left:0;width:${Math.max(w,pw)}%"></u><i style="width:${w}%;background:${col}"></i></div><span class="mono small" style="text-align:right">${p2(pr.now)}</span><b style="text-align:right;color:${col}">${esc(curLetter(c))}</b></div>`; }).join('')+`<div class="mini"><span class="code">P5</span><span class="small muted">TA for Accounting · study hall block</span><span></span><span></span></div>`;
+  renderSchedule(); renderAgenda();
+}
+function gpaBlock(g,gf,compact){
+  const lo=1.5,hi=4; const x=v=>clamp((v-lo)/(hi-lo)*100,0,100);
+  return `<div class="between"><div class="eyebrow">Senior fall GPA · 6 core courses</div><span class="pill ${g.plan>=3.71?'ok':'warn'}">${g.plan>=3.71?'In target band':'Below 3.71 target'}</span></div>
+  <div class="row" style="gap:14px;margin-top:10px;align-items:baseline;flex-wrap:wrap"><span class="big">${fin(g.now)?g.now.toFixed(2):'n/a'}</span><span class="muted mono">now</span><span class="faint" style="font-size:22px">→</span><span class="big ice">${fin(g.plan)?g.plan.toFixed(2):'n/a'}</span><span class="muted mono">plan</span></div>
+  <div class="meter" role="img" aria-label="GPA meter: now ${g.now.toFixed(2)}, plan ${g.plan.toFixed(2)}, target 3.71 to 3.86"><div class="band" style="left:${x(3.71)}%;width:${x(3.86)-x(3.71)}%"></div><div class="fill" style="width:${x(g.plan)}%"></div><div class="mk" style="left:${x(g.now)}%"></div><div class="mk plan" style="left:${x(g.plan)}%"></div></div>
+  <div class="meter-scale"><span>1.5</span><span>2.0</span><span>2.5</span><span>3.0</span><span>3.5</span><span>4.0</span></div>
+  <p class="note" style="margin-top:10px">Target band 3.71 to 3.86. With French 3A counted: ${gf.now.toFixed(2)} → ${gf.plan.toFixed(2)}. Entering cumulative GPA 2.78. Unweighted 4.0 scale from each course's letter.</p>`;
+}
+function renderQueue(){
+  const rows=buildQueue().slice(0,12);
+  if(!rows.length){ $('#queue').innerHTML='<div class="empty">Nothing is missing or due soon. Nice.</div>'; return; }
+  $('#queue').innerHTML=rows.map(r=>{
+    const c=r.c;
+    if(r.k==='bundle'){
+      const allOn=r.bundle.every(a=>state.plan[String(a.id)]&&state.plan[String(a.id)].on);
+      return `<div class="q ${allOn?'done':''}"><input type="checkbox" class="chk" ${allOn?'checked':''} data-bundle="${c.id}" aria-label="Count all ${r.bundle.length} ${esc(c.meta.short)} items"><div class="minw0"><div class="qn">Clear ${esc(c.meta.short)} missing work (${r.bundle.length} items)</div><div class="qm"><span class="code">${esc(c.meta.code)}</span><span class="pill crit">${r.bundle.length} at 0</span><span>${esc(actionText(r))}</span></div></div><div class="gain">+${r.g.toFixed(1)}%<small>if all done</small></div></div>`;
+    }
+    const a=r.a; const on=!!(state.plan[String(a.id)]&&state.plan[String(a.id)].on);
+    const pr=proj(c); const after=(pr.now??0)+r.g; const l0=curLetter(c), l1=letterOf(c,after);
+    return `<div class="q ${on?'done':''}"><input type="checkbox" class="chk" ${on?'checked':''} data-lever="${c.id}:${esc(String(a.id))}" aria-label="Count ${esc(a.name)}"><div class="minw0"><div class="qn">${esc(a.name)}</div><div class="qm"><span class="code">${esc(c.meta.code)}</span>${kindPill(c,a)}<span>${esc(actionText(r))}</span>${a.url?`<a href="${esc(a.url)}" target="_blank" rel="noopener">Canvas ↗</a>`:''}</div></div><div class="gain">+${r.g.toFixed(1)}%<small>${l0!==l1?`${esc(l0)} → ${esc(l1)}`:`${pts(a.possible)} pts`}</small></div></div>`;
+  }).join('');
+}
+function dayPlan(d){
+  const wd=d.getDay(); const key=dkey(d); const special=[];
+  if(key==='2026-10-19') special.push({t:'8:00',l:'Counselor SSR briefing, Skyline counseling office',k:'crit'});
+  if(wd===0||wd===6) return {title:`${WDL[wd]} reset`,blocks:[{t:'Morning',l:'Deep work: college essays and research'},{t:'Midday',l:'Starbucks block: clear the top 3 queue items'},{t:'Afternoon',l:'Soccer per the Praxis schedule, or a 25m turf session'},{t:'Evening',l:'Plan the week, nightly debrief'},{t:'11:30 PM',l:'Hard sleep lock'}]};
+  const am=[{t:'5:15',l:'Wake · 6m core, 2 to 3 Klahanie hill sprints, 10m ball mastery'},{t:'',l:'Cold shower'}];
+  let school;
+  if(wd===3){
+    am.push({t:'',l:'Extended deep work or Starbucks block'},{t:'9:40',l:'Leave Klahanie'});
+    school=[{t:'10:10',l:'P2 IB Economics SL (80m)'},{t:'',l:'P4 IB Math AA HL 2 (80m)'},{t:'',l:'P6 IB Biology HL 1 (80m)'},{t:'2:55',l:'Flex study hall until 3:45',k:'study'}];
+  } else {
+    am.push({t:'',l:'Deep work: essays, research, urgent schoolwork'},{t:'7:30',l:'Drive to Skyline (~30 min)'});
+    if(wd===2) school=[{t:'8:00',l:'P1 Creative Writing (80m)'},{t:'9:20',l:'Flex study hall until 10:05',k:'study'},{t:'',l:'P3 Civics (80m)'},{t:'',l:'P5 TA study hall (80m)',k:'study'},{t:'',l:'P7 IB Business Mgmt HL (80m)'},{t:'2:55',l:'Dismissal'}];
+    else school=[{t:'8:00',l:'P1 Creative Writing'},{t:'',l:'P2 IB Economics SL'},{t:'',l:'P3 Civics'},{t:'',l:'P4 IB Math AA HL 2'},{t:'',l:'P5 TA study hall',k:'study'},{t:'',l:'P6 IB Biology HL 1'},{t:'',l:'P7 IB Business Mgmt HL'},{t:'2:55',l:'Dismissal · about 50 minutes a period'}];
+  }
+  const soc=state.soccer[key]||'practice';
+  const pm=[{t:'After',l:'Starbucks work block (~20 min drive home)'},{t:'Evening',l:soc==='flex'?'Flex: 25m local turf session':soc==='rest'?'Rest day':'Snohomish United practice'},{t:'Night',l:'Dinner, reset, nightly debrief'},{t:'11:30',l:'Hard sleep lock'}];
+  return {title:niceDay(d),blocks:[...special,...am,...school,...pm]};
+}
+function renderSchedule(){
+  const now=new Date(); const wd=now.getDay();
+  const useNext=wd===0||wd===6||now.getHours()>=16;
+  const d=useNext?nextSchoolDay(now):sod(now);
+  const p=dayPlan(d);
+  $('#schedTitle').textContent=useNext?`Next up · ${p.title}`:`Today · ${p.title}`;
+  $('#schedSub').textContent=d.getDay()===3?'Wednesday late-start even block':d.getDay()===2?'Tuesday odd block':'All 7 periods';
+  $('#schedule').innerHTML=p.blocks.map(b=>`<div class="sl ${b.k||''}"><span class="tm">${esc(b.t)}</span><span class="ds">${esc(b.l)}</span></div>`).join('');
+}
+function renderAgenda(){
+  const now=new Date(), end=addDays(sod(now),8);
+  const list=[];
+  for(const c of courses()){ const covers=state.custom.filter(x=>+x.course===c.id&&x.replacedBy&&!projectedReplaced(c,x)).map(x=>new RegExp(x.replacedBy,'i'));
+    for(const a of items(c)){ if(a.score!=null||!a.due) continue; if(a.due<sod(now)||a.due>=end) continue; if(isAwaiting(a)) continue; if(!a.projected&&!a.possible&&covers.some(re=>re.test(a.name))) continue; list.push({d:a.due,c,a}); } }
+  for(const e of EVENTS){ const d=parseWhen(e.t); if(d&&d>=now&&d<end) list.push({d,e}); }
+  list.sort((x,y)=>x.d-y.d);
+  if(!list.length){ $('#agenda').innerHTML='<div class="empty">Nothing due in the next week.</div>'; return; }
+  const by=new Map(); for(const it of list){ const k=dkey(it.d); if(!by.has(k)) by.set(k,[]); by.get(k).push(it); }
+  $('#agenda').innerHTML=[...by.entries()].map(([k,arr])=>{ const d=arr[0].d; const n=dayDiff(d,now);
+    return `<div style="padding:8px 0;border-bottom:1px solid var(--hair)"><div class="eyebrow" style="margin-bottom:6px">${n===0?'Today':n===1?'Tomorrow':WDL[d.getDay()]} · ${md(d)}</div>${arr.map(it=>it.e?`<div class="row small" style="padding:3px 0"><span class="pill ${it.e.k}">Milestone</span><span>${esc(it.e.l)}</span></div>`:`<div class="row small" style="padding:3px 0;${it.a.possible?'':'opacity:.55'}"><span class="code">${esc(it.c.meta.code)}</span><span class="minw0 trunc">${esc(it.a.name)}</span><span class="mono faint" style="margin-left:auto;white-space:nowrap">${it.a.possible?pts(it.a.possible)+' pts':'notes'}</span></div>`).join('')}</div>`; }).join('');
+}
+
+/* =====================================================================
+   COURSES
+   ===================================================================== */
+function renderCourses(){
+  const drift=courses().filter(c=>proj(c).drift>.05);
+  $('#coursesNote').textContent=`Canvas data ${DATA.syncedAt||''}${drift.length?` · ${drift.map(c=>c.meta.code).join(', ')} differ slightly from the category math (extra credit or a hidden rule), so plans are measured as changes from Canvas`:''}`;
+  const cards=[];
+  for(const c of courses()){
+    if(c.id===51596){ cards.push(`<div class="ta"><span class="code">P5</span><div><div class="h3" style="color:var(--ink-2)">TA for Accounting</div><div class="small">Study hall block: 50 minutes on M/Th/F, 80 on Tuesday. No coursework.</div></div></div>`); }
+    cards.push(courseCard(c));
+  }
+  $('#courseCards').innerHTML=cards.join('');
+}
+function courseCard(c){
+  const pr=proj(c); const [st,sk]=status(pr.now); const L=curLetter(c); const Lp=letterOf(c,pr.plan);
+  const gs=groupsOf(c,null,false).filter(g=>g.w>0);
+  const all=items(c);
+  const miss=needsAction(c).length;
+  const soon=all.filter(a=>a.score==null&&!isAwaiting(a)&&a.due&&a.due>=sod(new Date())&&a.due<addDays(new Date(),7)&&a.possible>0).length;
+  const wait=all.filter(a=>a.possible>0&&(kind(c,a)==='awaiting')).length;
+  const next=all.filter(a=>a.score==null&&!isAwaiting(a)&&a.due&&a.due>=sod(new Date())).sort((a,b)=>a.due-b.due)[0];
+  const changed=fin(pr.plan)&&Math.abs(pr.plan-pr.now)>.005;
+  return `<article class="glass cc tilt">
+    <div class="cc-top"><div class="minw0"><div class="row" style="gap:6px"><span class="code">${esc(c.meta.p)}</span><span class="code">${esc(c.meta.code)}</span></div><div class="cc-name" style="margin-top:8px">${esc(c.meta.short)}</div><div class="cc-teacher">${esc(c.meta.full||'')}${c.meta.sub?` · ${esc(c.meta.sub)}`:''}</div></div><span class="pill ${sk}">${st}</span></div>
+    <div class="cc-grade"><span class="big" style="font-size:40px">${fin(pr.now)?pr.now.toFixed(2):'n/a'}<span style="font-size:20px;color:var(--ink-3)">%</span></span><span class="letter" style="color:${lcolor(L)}">${esc(L)}</span>${changed?`<span class="small mono ice" title="With your checked plan">plan ${p2(pr.plan)} ${esc(Lp)}</span>`:''}</div>
+    <div class="stack" style="gap:9px">${gs.map(g=>{ const pc=g.p>0?g.e/g.p*100:null; return `<div class="grp"><span class="trunc">${esc(g.name)}</span><span class="mono faint" style="text-align:right">${g.w}%</span><span class="mono" style="text-align:right">${pc==null?'none yet':pc.toFixed(1)+'%'}</span><div class="bar"><i style="width:${pc==null?0:clamp(pc,0,100)}%;background:${pc==null?'transparent':pc>=90?'var(--ok)':pc>=80?'var(--ice)':pc>=70?'var(--warn)':'var(--crit)'}"></i></div></div>`; }).join('')}</div>
+    <div class="stats3"><div class="stat"><b class="${miss?'crit':''}">${miss}</b><span>Missing or 0</span></div><div class="stat"><b>${soon}</b><span>Due in 7 days</span></div><div class="stat"><b class="${wait?'ice':''}">${wait}</b><span>Awaiting grade</span></div></div>
+    <div class="small muted minw0 trunc">${next?`Next: <span style="color:var(--ink)">${esc(next.name)}</span> · ${esc(dueLabel(next.due))}`:'Nothing scheduled'}</div>
+    <div class="row wrapx" style="gap:8px"><button class="btn sm primary" data-act="openCourse" data-id="${c.id}">Details</button><a class="btn sm" href="${CANVAS}/courses/${c.id}" target="_blank" rel="noopener">Canvas ↗</a>${c.meta.mail?`<button class="btn sm ghost" data-act="openMail" data-key="${c.meta.mail}">Email ${esc(c.meta.teacher)}</button>`:''}</div>
+  </article>`;
+}
+function openCourse(id){
+  const c=C(id); if(!c) return;
+  const all=items(c); const pr=proj(c);
+  const sec=(title,arr,empty)=>`<div class="dsec"><div class="eyebrow" style="margin-bottom:6px">${title} · ${arr.length}</div>${arr.length?arr.map(a=>drow(c,a)).join(''):`<div class="note">${empty}</div>`}</div>`;
+  const act=all.filter(a=>a.possible>0&&['zero','missing','overdue','regrade'].includes(kind(c,a)));
+  const wait=all.filter(a=>kind(c,a)==='awaiting');
+  const up=all.filter(a=>kind(c,a)==='upcoming'&&!a.projected).sort((a,b)=>a.due-b.due);
+  const projd=all.filter(a=>a.projected);
+  const graded=all.filter(a=>kind(c,a)==='graded'&&!(a.possible===0&&!a.score)).sort((a,b)=>(b.due||0)-(a.due||0));
+  $('#drawerPanel').innerHTML=`<div class="between"><div><div class="row" style="gap:6px"><span class="code">${esc(c.meta.p)}</span><span class="code">${esc(c.meta.code)}</span></div><h2 class="h2" id="drawerTitle" style="font-size:22px;margin-top:8px">${esc(c.meta.short)}</h2><div class="small muted">${esc(c.meta.full||'')} ${c.meta.email?`· <span class="mono">${esc(c.meta.email)}</span>`:''}</div></div><button class="btn sm" data-act="closeDrawer">Close</button></div>
+   <div class="row wrapx" style="gap:16px;margin-top:16px;align-items:baseline"><span class="big">${p2(pr.now)}</span><span class="letter" style="color:${lcolor(curLetter(c))}">${esc(curLetter(c))}</span><span class="small muted">Canvas name: ${esc(c.name)}</span></div>
+   <dl class="kv" style="margin-top:12px">${c.weights.filter(w=>w.weight>0).map(w=>`<dt>${esc(w.name)}</dt><dd class="mono">${w.weight}%</dd>`).join('')}</dl>
+   ${sec('Needs action',act,'Nothing missing.')}${sec('Submitted, awaiting a grade',wait,'Nothing waiting.')}${sec('Coming up',up,'Nothing scheduled.')}${projd.length?sec('Projected, not in Canvas yet',projd,''):''}${sec('Graded',graded,'No grades yet.')}
+   ${c.announcements&&c.announcements.length?`<div class="dsec"><div class="eyebrow" style="margin-bottom:6px">Announcements</div>${c.announcements.map(n=>`<div class="drow"><div class="nm">${esc(n.title)}</div><div class="sc faint">${esc(n.date)}</div><div class="cm">${esc(n.body)}</div></div>`).join('')}</div>`:''}
+   ${c.modules&&c.modules.length?`<div class="dsec"><div class="eyebrow" style="margin-bottom:6px">Modules</div>${c.modules.map(m=>`<div class="drow"><div class="nm">${esc(m.name)}</div><div class="sc faint">${m.count?m.count+' items':''}</div></div>`).join('')}</div>`:''}`;
+  $('#drawer').hidden=false; setTimeout(()=>{ const b=$('#drawerPanel [data-act="closeDrawer"]'); b&&b.focus(); },30);
+}
+function drow(c,a){
+  const sc=a.score!=null?`${pts(a.score)}/${pts(a.possible)}`:`/${pts(a.possible)}`;
+  return `<div class="drow"><div class="nm">${esc(a.name)}</div><div class="sc">${sc}</div><div class="sub">${kindPill(c,a)}<span>${esc(groupName(c,a.gid))}</span>${a.due?`<span>${esc(mdy(a.due))}</span>`:''}${a.late?'<span class="warn">late</span>':''}${a.url?`<a href="${esc(a.url)}" target="_blank" rel="noopener">Open ↗</a>`:''}</div>${a.comments?`<div class="cm">${esc(a.comments)}</div>`:''}${a.instr?`<details class="cm"><summary class="xs muted" style="cursor:pointer">Instructions</summary>${esc(a.instr)}</details>`:''}</div>`;
+}
+
+/* =====================================================================
+   WHAT-IF
+   ===================================================================== */
+let wiChart=null, edChart=null;
+const css=v=>getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+const refLines={id:'refLines',afterDatasetsDraw(chart,args,opts){ const lines=(opts&&opts.lines)||[]; const {ctx,chartArea:a,scales}=chart; const y=scales.y; if(!y||!a) return; for(const l of lines){ const yy=y.getPixelForValue(l.v); if(yy<a.top||yy>a.bottom) continue; ctx.save(); ctx.setLineDash([4,5]); ctx.strokeStyle=l.c; ctx.lineWidth=1; ctx.beginPath(); ctx.moveTo(a.left,yy); ctx.lineTo(a.right,yy); ctx.stroke(); ctx.setLineDash([]); ctx.fillStyle=l.c; ctx.font='600 10px "JetBrains Mono", monospace'; ctx.textAlign='right'; ctx.fillText(l.t,a.right-2,yy-5); ctx.restore(); } }};
+function chartsReady(){ return typeof window.Chart==='function'; }
+function noChart(sel,msg){ const cv=$(sel); if(!cv) return; cv.hidden=true; const box=cv.parentElement; if(!box.querySelector('.nochart')){ const d=document.createElement('div'); d.className='nochart'; d.textContent=msg; box.appendChild(d); } }
+function setupChartDefaults(){ if(!chartsReady()) return; Chart.defaults.color='rgba(236,242,255,.62)'; Chart.defaults.borderColor='rgba(255,255,255,.07)'; Chart.defaults.font.family='"JetBrains Mono", ui-monospace, monospace'; Chart.defaults.font.size=11; Chart.defaults.plugins.legend.display=false; Chart.defaults.plugins.tooltip.backgroundColor='rgba(10,14,28,.95)'; Chart.defaults.plugins.tooltip.borderColor='rgba(255,255,255,.15)'; Chart.defaults.plugins.tooltip.borderWidth=1; Chart.defaults.plugins.tooltip.padding=10; Chart.defaults.plugins.tooltip.titleFont={family:'Inter',weight:'600',size:12}; }
+function iceGrad(ctx,horizontal){ const ch=ctx.chart; const a=ch.chartArea; if(!a) return css('--ice'); const g=horizontal?ch.ctx.createLinearGradient(a.left,0,a.right,0):ch.ctx.createLinearGradient(0,a.bottom,0,a.top); g.addColorStop(0,'rgba(54,226,196,.55)'); g.addColorStop(1,'rgba(139,239,255,.95)'); return g; }
+function renderWhatIf(){
+  $('#defWork').value=state.defaults.work; $('#defTest').value=state.defaults.test;
+  $('#workOut').textContent=state.defaults.work+'%'; $('#testOut').textContent=state.defaults.test+'%';
+  ['defWork','defTest'].forEach(id=>{ const el=$('#'+id); el.style.setProperty('--p',((el.value-el.min)/(el.max-el.min)*100)+'%'); });
+  $('#floor').checked=!!state.floor; $('#withFrench').checked=!!state.withFrench;
+  $$('#winSeg button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.win===state.win)));
+  $('#scaleNote').textContent='Letter cutoffs come from the letters Canvas shows today: most courses use 93 / 90 / 87 / 83 / 80 for A to B-, Econ uses straight 90 / 80 / 70, and Math reads B- at 78.6%. Canvas letters win after every sync.';
+  const g=gpa(false), gf=gpa(true);
+  const head=state.withFrench?gf:g;
+  $('#wiGpa').innerHTML=`<div class="well pad">${gpaBlock(state.withFrench?{...gf}:g,state.withFrench?g:gf,false).replace('6 core courses',state.withFrench?'7 courses incl. French':'6 core courses').replace('With French 3A counted',state.withFrench?'Without French':'With French 3A counted')}</div>`;
+  void head;
+  renderLevers(); drawWiChart(); fillCustomForm();
+}
+function renderLevers(){
+  const out=[];
+  for(const c of courses()){
+    const lv=items(c).filter(a=>isLever(c,a)).sort((a,b)=>{ const ka=['zero','missing','regrade','overdue','graded','awaiting','upcoming'].indexOf(kind(c,a)), kb=['zero','missing','regrade','overdue','graded','awaiting','upcoming'].indexOf(kind(c,b)); return ka-kb||((a.due||0)-(b.due||0)); });
+    if(!lv.length) continue;
+    const pr=proj(c); const base=calcRaw(c,null,false);
+    const on=lv.filter(a=>state.plan[String(a.id)]&&state.plan[String(a.id)].on).length;
+    const open=state.open[String(c.id)]!==false;
+    const L0=curLetter(c), L1=letterOf(c,pr.plan);
+    out.push(`<details class="wi glass" data-cid="${c.id}" ${open?'open':''}><summary><span class="chev" aria-hidden="true">▸</span><div class="minw0"><div class="row" style="gap:8px;flex-wrap:wrap"><span class="code">${esc(c.meta.code)}</span><span class="h3">${esc(c.meta.short)}</span><span class="pill">${on}/${lv.length} checked</span></div></div><div class="row" style="gap:10px;flex-wrap:wrap;justify-content:flex-end"><span class="mono small muted">${p2(pr.now)} ${esc(L0)}</span><span class="faint">→</span><span class="mono" style="color:${lcolor(L1)}">${p2(pr.plan)} <b>${esc(L1)}</b></span><span class="mono small ${pr.plan-pr.now>.004?'ok':'faint'}">${sgn(pr.plan-pr.now)}</span></div></summary>
+    <div class="row wrapx" style="gap:8px;padding:10px 16px;border-bottom:1px solid var(--hair)"><button class="btn sm" data-act="courseAll" data-id="${c.id}" data-v="1">Check all</button><button class="btn sm ghost" data-act="courseAll" data-id="${c.id}" data-v="0">Uncheck all</button>${c.meta.mail?`<button class="btn sm ghost" data-act="openMail" data-key="${c.meta.mail}">Draft email to ${esc(c.meta.teacher)}</button>`:''}</div>
+    ${lv.map(a=>{ const id=String(a.id); const pl=state.plan[id]; const isOn=!!(pl&&pl.on); const g=gainOne(c,a,base); const cap=capPct(c,a);
+      return `<div class="lv"><input type="checkbox" class="chk" ${isOn?'checked':''} data-lever="${c.id}:${esc(id)}" aria-label="Count ${esc(a.name)}"><div class="minw0"><div class="nm">${esc(a.name)}</div><div class="meta">${kindPill(c,a)}<span>${esc(groupName(c,a.gid))}</span><span class="mono">${a.score!=null?pts(a.score)+'/':''}${pts(a.possible)} pts</span>${a.projected?`<button class="btn sm ghost" style="height:22px" data-act="delCustom" data-id="${esc(id)}">Remove</button>`:''}</div></div><label class="row" style="gap:6px" title="Expected score"><input type="number" class="field sm pct" min="0" max="${Math.floor(cap*100)/100}" step="1" value="${Math.round(pctFor(c,a)*100)/100}" data-pct="${c.id}:${esc(id)}" aria-label="Expected percent for ${esc(a.name)}"><span class="xs muted">%</span></label><span class="g ${isOn?'ok':'faint'}" title="Change to the course grade if this item counts">${g>=0?'+':''}${g.toFixed(2)}</span></div>`; }).join('')}
+    </details>`);
+  }
+  $('#levers').innerHTML=out.join('')||'<div class="glass pad empty">No open items in this window.</div>';
+}
+function drawWiChart(){
+  if(!chartsReady()){ noChart('#wiChart','Charts need Chart.js from cdnjs, which did not load. Every number on this page is still live.'); return; }
+  const list=courses(); const labels=list.map(c=>c.meta.code);
+  const now=list.map(c=>{ const v=proj(c).now; return fin(v)?+v.toFixed(2):0; });
+  const plan=list.map(c=>{ const v=proj(c).plan; return fin(v)?+v.toFixed(2):0; });
+  const max=Math.max(100,Math.ceil(Math.max(...plan,...now)/5)*5);
+  if(wiChart){ wiChart.data.labels=labels; wiChart.data.datasets[0].data=now; wiChart.data.datasets[1].data=plan; wiChart.options.scales.y.max=max; wiChart.update(); return; }
+  wiChart=new Chart($('#wiChart'),{type:'bar',data:{labels,datasets:[
+    {label:'Canvas',data:now,backgroundColor:'rgba(236,242,255,.18)',borderColor:'rgba(236,242,255,.35)',borderWidth:1,borderRadius:6,maxBarThickness:34},
+    {label:'Plan',data:plan,backgroundColor:ctx=>iceGrad(ctx,false),borderRadius:6,maxBarThickness:34}
+  ]},options:{maintainAspectRatio:false,animation:{duration:reduceMotion?0:500},scales:{y:{min:0,max,ticks:{stepSize:10,callback:v=>v+'%'},grid:{color:'rgba(255,255,255,.06)'}},x:{grid:{display:false}}},
+    plugins:{refLines:{lines:[{v:90,t:'90 · A range',c:'rgba(95,232,169,.75)'},{v:80,t:'80',c:'rgba(139,239,255,.5)'},{v:70,t:'70',c:'rgba(255,200,112,.5)'}]},tooltip:{callbacks:{title:it=>{ const c=list[it[0].dataIndex]; return c.meta.short; },label:it=>{ const c=list[it.dataIndex]; const v=it.raw; return ` ${it.dataset.label}: ${v.toFixed(2)}% (${it.datasetIndex?letterOf(c,v):curLetter(c)})`; }}}}},plugins:[refLines]});
+}
+function fillCustomForm(){
+  const cs=$('#cfCourse'); const cur=cs.value||'51804';
+  cs.innerHTML=courses().map(c=>`<option value="${c.id}">${esc(c.meta.code)} · ${esc(c.meta.short)}</option>`).join(''); cs.value=courses().some(c=>String(c.id)===cur)?cur:String(courses()[0].id);
+  fillGroups();
+}
+function fillGroups(){ const c=C($('#cfCourse').value); $('#cfGroup').innerHTML=c?c.weights.filter(w=>w.weight>0).map(w=>`<option value="${w.id}">${esc(w.name)} (${w.weight}%)</option>`).join(''):''; }
+
+/* =====================================================================
+   ADMISSIONS
+   ===================================================================== */
+function edScores(){
+  return ED_SCHOOLS.map(s=>{
+    const coach=s.clo!=null&&!!state.ed.coach[s.id];
+    const lo=coach?s.clo:s.lo, hi=coach?s.chi:s.hi, mid=(lo+hi)/2;
+    const W=state.ed.w, R=state.ed.r[s.id]||ED_R0[s.id];
+    let fw=0,fs=0; for(const c of ED_CRIT){ if(c.auto) continue; fw+=+W[c.id]||0; fs+=(+W[c.id]||0)*(+R[c.id]||0); }
+    const fit=fw?fs/fw*10:0;
+    const ow=+W.odds||0; const comp=(ow+fw)?((ow*mid/10)+fs)/(ow+fw)*10:0;
+    return {...s,coach,lo,hi,mid,fit,comp,ev:mid*fit/100};
+  });
+}
+function renderAdmissions(){
+  const sc=edScores(); const ranked=[...sc].sort((a,b)=>b.comp-a.comp);
+  $('#edRank').innerHTML=ranked.map((s,i)=>`<div class="rank ${i===0?'top':''}"><span class="pos">${i+1}</span><div class="minw0"><div class="h3 trunc">${esc(s.name)}</div><div class="xs muted">${esc(s.prog)} · ${s.div} · odds ${s.lo} to ${s.hi}%${s.coach?' with coach':''}</div></div><div style="text-align:right"><div class="mono" style="font-weight:700;color:${i===0?'var(--ice)':'var(--ink)'}">${s.comp.toFixed(1)}</div><div class="xs muted mono">slot value ${s.ev.toFixed(1)}</div></div></div>`).join('')+`<p class="note" style="margin-top:8px">Composite blends odds (midpoint ÷ 10) with your weighted ratings, out of 100. Slot value is odds midpoint × fit ÷ 100: the expected payoff of spending ED II there.</p>`;
+  $('#coachToggles').innerHTML=ED_SCHOOLS.filter(s=>s.clo!=null).map(s=>`<label class="between small well" style="padding:9px 12px;cursor:pointer"><span>${esc(s.name)} · D3 coach pre-read support secured</span><input type="checkbox" class="switch" data-coach="${s.id}" ${state.ed.coach[s.id]?'checked':''}></label>`).join('');
+  $('#edWeights').innerHTML=`<div class="h2">Criteria weights</div>`+ED_CRIT.map(c=>{ const v=state.ed.w[c.id]; return `<label class="stack" style="gap:4px"><span class="between small"><span>${esc(c.name)}</span><b class="mono">${v}</b></span><input type="range" min="0" max="10" step="1" value="${v}" data-edw="${c.id}" style="--p:${v*10}%" aria-label="Weight for ${esc(c.name)}"></label>`; }).join('')+`<button class="btn sm ghost" data-act="edReset">Reset weights and ratings</button>`;
+  $('#edTable').innerHTML=`<table class="t"><thead><tr><th>School</th><th>Div</th><th>Odds</th>${ED_CRIT.filter(c=>!c.auto).map(c=>`<th>${esc(c.name)}</th>`).join('')}<th>Fit</th></tr></thead><tbody>${sc.map(s=>`<tr><td style="white-space:nowrap;font-weight:600">${esc(s.name)}</td><td class="mono">${s.div}</td><td class="mono" style="white-space:nowrap">${s.lo}–${s.hi}%</td>${ED_CRIT.filter(c=>!c.auto).map(c=>`<td><input class="field" type="number" min="1" max="10" step="1" value="${state.ed.r[s.id][c.id]}" data-edr="${s.id}:${c.id}" aria-label="${esc(s.name)} ${esc(c.name)}"></td>`).join('')}<td class="mono">${s.fit.toFixed(0)}</td></tr>`).join('')}</tbody></table>`;
+  drawEdChart(sc); renderWaves();
+}
+function drawEdChart(sc){
+  if(!chartsReady()){ noChart('#edChart','Chart.js did not load. The ranking still updates.'); return; }
+  const labels=sc.map(s=>s.name);
+  const comp=sc.map(s=>+s.comp.toFixed(1)), fit=sc.map(s=>+s.fit.toFixed(1)), odds=sc.map(s=>[s.lo,s.hi]);
+  if(edChart){ edChart.data.datasets[0].data=comp; edChart.data.datasets[1].data=fit; edChart.data.datasets[2].data=odds; edChart.update(); return; }
+  edChart=new Chart($('#edChart'),{type:'bar',data:{labels,datasets:[
+    {label:'Composite',data:comp,backgroundColor:ctx=>iceGrad(ctx,true),borderRadius:6,barPercentage:.9,categoryPercentage:.78},
+    {label:'Fit (ratings only)',data:fit,backgroundColor:'rgba(179,166,255,.55)',borderRadius:6,barPercentage:.9,categoryPercentage:.78},
+    {label:'Admit odds range',data:odds,backgroundColor:'rgba(255,200,112,.55)',borderColor:'rgba(255,200,112,.9)',borderWidth:1,borderRadius:6,borderSkipped:false,barPercentage:.9,categoryPercentage:.78}
+  ]},options:{indexAxis:'y',maintainAspectRatio:false,animation:{duration:reduceMotion?0:500},scales:{x:{min:0,max:100,ticks:{callback:v=>v},grid:{color:'rgba(255,255,255,.06)'}},y:{grid:{display:false},ticks:{font:{family:'Inter',size:12,weight:'600'},color:'rgba(236,242,255,.85)'}}},
+    plugins:{legend:{display:true,position:'bottom',labels:{boxWidth:10,boxHeight:10,usePointStyle:true,pointStyle:'rectRounded',color:'rgba(236,242,255,.7)'}},tooltip:{callbacks:{label:it=>{ const v=it.raw; return Array.isArray(v)?` Admit odds: ${v[0]} to ${v[1]}%`:` ${it.dataset.label}: ${v}`; }}}}}});
+}
+function renderWaves(){
+  let total=0,done=0;
+  $('#waves').innerHTML=WAVES.map(w=>{ const n=w.s.length; const sub=w.s.filter(s=>(state.waves[s[0]]|0)===3).length; total+=n; done+=sub;
+    return `<div class="glass wave"><div class="between"><span class="eyebrow">Wave ${w.n} · ${esc(w.when)}</span><span class="mono small">${sub}/${n}</span></div><div class="h3">${esc(w.title)}</div><div class="prog"><i style="width:${n?sub/n*100:0}%"></i></div>${w.s.map(([id,name,odds,note])=>`<div class="sch"><div class="minw0"><div class="nm">${esc(name)}</div>${note?`<div class="xs muted">${esc(note)}</div>`:''}</div><span class="od">${esc(odds)}</span><select class="field sm" data-wave="${id}" aria-label="Status for ${esc(name)}">${WAVE_ST.map((t,i)=>`<option value="${i}" ${(state.waves[id]|0)===i?'selected':''}>${t}</option>`).join('')}</select></div>`).join('')}</div>`; }).join('');
+  $('#waveNote').textContent=`${done} of ${total} submitted`;
+}
+
+/* =====================================================================
+   EMAIL STUDIO
+   ===================================================================== */
+const li=(arr,f)=>arr.map(f).join('\n');
+function soon(n){ const d=addDays(new Date(),n); return `${WDL[d.getDay()]} ${md(d)}`; }
+function itemsBy(id,kinds){ const c=C(id); if(!c) return []; return items(c).filter(a=>a.possible>0&&kinds.includes(kind(c,a))&&!(ruleFor(c,a)||{}).noRecovery); }
+const MAILS={
+  civ:{to:()=>META[51804].email,who:'Miss Dubs',course:'Civics · P3',why:'Unit 1 recovery, missing work, participation',build(){
+    const c=C(51804); if(!c) return null;
+    const cls=itemsBy(51804,['zero','missing','overdue']).filter(a=>a.gid!==155281&&!/webquest/i.test(a.name));
+    const part=itemsBy(51804,['zero']).filter(a=>a.gid===155281&&!a.missing);
+    const tribal=itemsBy(51804,['zero','missing']).filter(a=>a.gid===155281&&a.missing);
+    const u1=c.assignments.find(a=>/^1 - Unit 1 Test$/i.test(a.name));
+    const lines=[];
+    const web=c.assignments.find(a=>/webquest/i.test(a.name)&&a.score==null);
+    let n=1;
+    if(web) lines.push(`${n++}. I'm turning in the Congressperson Research Webquest by ${web.due?niceDay(web.due):'Monday'}.`);
+    if(u1&&u1.score!=null&&u1.score<u1.possible*.79) lines.push(`${n++}. I'd like to use the Unit 1 Test recovery option from the syllabus (I have a ${pts(u1.score)}/${pts(u1.possible)}). When is a good time for me to do that?`);
+    const miss=cls.concat(tribal);
+    if(miss.length) lines.push(`${n++}. These still show as missing:\n${li(miss,a=>`   - ${a.name}`)}\n   Can I still turn them in for credit, and is there a deadline I should hit?`);
+    if(part.length) lines.push(`${n++}. I also have ${part.map(a=>`0/${pts(a.possible)} on "${a.name}"`).join(' and ')}. Is there anything I can do to make those up?`);
+    return {subject:'Ankit Kolagotla (P3): Unit 1 recovery and missing work',body:`Hi Miss Dubs,\n\nI'm working on bringing my Civics grade up before the Nov 1 grade check, and I want to make sure I'm doing it the right way.\n\n${lines.join('\n\n')}\n\nI'm preparing for the Unit 2 test this week with the study guide and the practice Blooket. Thank you for your help.\n\nAnkit Kolagotla\nCivics, Period 3`};
+  }},
+  cw:{to:()=>META[49442].email,who:'Mrs. Cossano',course:'Creative Writing · P1',why:'Late Fairy Tale Rewrite',build(){
+    const c=C(49442); if(!c) return null;
+    const rw=c.assignments.find(a=>/fairy tale rewrite/i.test(a.name));
+    const an=c.assignments.find(a=>/fairytale analysis/i.test(a.name));
+    const pod=c.assignments.find(a=>/podcast/i.test(a.name));
+    const parts=[];
+    if(rw&&(rw.score===0||rw.missing)) parts.push(`I missed the Fairy Tale Rewrite deadline${rw.due?` on ${md(rw.due)}`:''}, and it's showing as a 0 in the culminating category. I'm sorry about that. Could I still turn it in for credit? I can have it done by ${soon(2)}. Since it was a partner assignment, please let me know if you'd like my partner and me to submit one document together or if I should submit my own.`);
+    if(an&&an.score!=null&&an.score<an.possible) parts.push(`I also wanted to ask whether I could revise the Fairytale Analysis (${pts(an.score)}/${pts(an.possible)}). I'd like to fix what I missed.`);
+    if(pod&&pod.score==null) parts.push(`I'm already starting on the Podcast or Script for ${pod.due?md(pod.due):'10/29'}.`);
+    return {subject:'Ankit Kolagotla (P1): Fairy Tale Rewrite',body:`Hi Mrs. Cossano,\n\n${parts.join('\n\n')||'I wanted to check in about my grade and see if there is anything I can improve before Nov 1.'}\n\nThank you,\nAnkit Kolagotla\nCreative Writing, Period 1`};
+  }},
+  econ:{to:()=>META[51754].email,who:'Mr. Hiatt',course:'IB Economics SL · P2',why:'Missing work, a regrade, two make-up quizzes',build(){
+    const c=C(51754); if(!c) return null; const pr=proj(c);
+    const todo=itemsBy(51754,['missing','overdue','zero']).filter(a=>!/quiz/i.test(a.name));
+    const quizzes=itemsBy(51754,['missing','overdue']).filter(a=>/quiz/i.test(a.name));
+    const regrade=itemsBy(51754,['regrade']);
+    const wait=itemsBy(51754,['awaiting']);
+    const intro=pr.now>=85&&pr.now<90?`I'm at ${p2(pr.now)} and I'd like to get to an A before Nov 1, so I'm cleaning up my missing work.`:`I'm cleaning up my missing work before the Nov 1 grade check.`;
+    const parts=[intro];
+    if(todo.length) parts.push(`These are the items I still need to turn in:\n${li(todo,a=>`- ${a.name}`)}\nCan I still submit these for credit?`);
+    const qs=[];
+    regrade.forEach(a=>qs.push(`- ${a.name} shows ${pts(a.score)}/${pts(a.possible)}, but I did submit it${a.late?' (late)':''}. Could you take a look when you have a chance?`));
+    if(quizzes.length) qs.push(`- I still need to take ${quizzes.map(a=>a.name.replace(/- Requires Respondus LockDown Browser/i,'').trim()).join(' and ')}. When could I do that?`);
+    if(qs.length) parts.push(`${qs.length>1?'Two questions':'One question'}:\n${qs.join('\n')}`);
+    if(wait.length) parts.push(`These are submitted and waiting on grades:\n${li(wait,a=>`- ${a.name}`)}`);
+    return {subject:'Ankit Kolagotla (P2): Missing work and grading questions',body:`Hi Mr. Hiatt,\n\n${parts.join('\n\n')}\n\nThank you,\nAnkit Kolagotla\nIB Economics SL, Period 2`};
+  }},
+  bus:{to:()=>META[51832].email,who:'Ms. Dineen',course:'IB Business Mgmt HL · P7',why:'Business Card + DECA checkpoint grades',build(){
+    const c=C(51832); if(!c) return null;
+    const card=c.assignments.find(a=>/business card/i.test(a.name));
+    const deca=itemsBy(51832,['awaiting']);
+    const parts=[];
+    if(card&&(card.score===0||card.missing)) parts.push(`I'm turning in my Business Card Intro assignment. I'm sorry it's so late. Can I still get credit for it? I can bring it to class on ${soon(1)}.`);
+    if(deca.length) parts.push(`I also submitted ${deca.map(a=>a.name).join(' and ')}. Whenever you have time, could you grade ${deca.length>1?'those':'it'}?`);
+    parts.push(`I'm studying for the 3.4 quiz on Thursday (profit and loss, the balance sheet, and depreciation).`);
+    return {subject:'Ankit Kolagotla (P7): Business Card and DECA checkpoints',body:`Hi Ms. Dineen,\n\n${parts.join('\n\n')}\n\nThank you,\nAnkit Kolagotla\nIB Business Management HL, Period 7`};
+  }},
+  math:{to:()=>META[50870].email,who:'Mrs. Cruz',course:'IB Math AA HL 2 · P4',why:'"R-40" on Ch 1 test, picture day, IA draft',build(){
+    const c=C(50870); if(!c) return null;
+    const t1=c.assignments.find(a=>/^Ch 1: Test$/i.test(a.name));
+    const pic=c.assignments.find(a=>/picture day/i.test(a.name)&&a.score==null);
+    const qs=[]; let n=1;
+    if(t1&&/R-40/.test(t1.comments||'')) qs.push(`${n++}. My Ch 1 Test (${pts(t1.score)}/${pts(t1.possible)}) has the comment "R-40." Could you tell me what that means, and whether test corrections or a retake are an option?`);
+    if(pic) qs.push(`${n++}. Senior Picture Day (${pts(pic.possible)} pts) is still open from when it got rained out. Is there a new date I should plan for?`);
+    return {subject:'Ankit Kolagotla (P4): Quick questions',body:`Hi Mrs. Cruz,\n\nI have ${qs.length>1?'a couple of':'a'} quick question${qs.length>1?'s':''}.\n\n${qs.join('\n\n')}\n\nI'm planning to upload my IA first draft for the Peer Edit by Friday 10/23. My topic is government announcements and how they affect the stock market.\n\nThank you,\nAnkit Kolagotla\nIB Math AA HL 2, Period 4`};
+  }},
+  fr:{to:()=>META[53482].email,who:'M. Chesko',course:'French 3A Online',why:'Study guide + catch-up plan (send in Canvas Inbox)',canvasInbox:true,build(){
+    const c=C(53482); if(!c) return null;
+    const z=itemsBy(53482,['zero','missing']);
+    const exam=c.assignments.find(a=>/module 1 & 2 exam/i.test(a.name));
+    return {subject:'Study guide for the Module 1 & 2 Exam, and my catch-up plan',body:`Bonjour M. Chesko,\n\nI'm checking in because I've fallen behind. I have ${z.length} missing item${z.length===1?'':'s'} from Modules 1 and 2, and I want to get caught up before the Module 1 & 2 Exam${exam&&exam.due?` on ${md(exam.due)}`:''}.\n\nMy plan is to finish 2 to 3 items every day this week, starting with the quizzes and the Module 1 Journal. Could you let me know whether these can still be submitted for credit?\n\nI'd also like to request the study guide for the Module 1 & 2 Exam. I'm planning to join your sync session on Monday 10/19 at 3:30 PM PT on the passé composé.\n\nMerci beaucoup,\nAnkit Kolagotla\n\n(Cc: mentor Kelly Albertelli)`};
+  }},
+  bio:{to:()=>META[51596].email,who:'Mrs. von Bargen',course:'IB Biology HL 1 · P6',why:'Science of Biology quiz retake (up to 31/35)',build(){
+    const c=C(51596); if(!c) return null;
+    const q=c.assignments.find(a=>/^Quiz: Science of Biology$/i.test(a.name));
+    if(!q||q.score==null||q.score>=31) return {subject:'Ankit Kolagotla (P6): Quick question',body:`Hi Mrs. von Bargen,\n\nI wanted to check whether any of my quizzes are still eligible for a retake before the quarter ends.\n\nThank you,\nAnkit Kolagotla\nIB Biology HL 1, Period 6`};
+    return {subject:'Ankit Kolagotla (P6): Science of Biology quiz retake',body:`Hi Mrs. von Bargen,\n\nI'd like to retake the Science of Biology quiz (${pts(q.score)}/${pts(q.possible)}) before the quarter ends. Could I come in during Flex on Tuesday 10/20 or Wednesday 10/21? If a Friday after school works better, I can do that instead.\n\nThank you,\nAnkit Kolagotla\nIB Biology HL 1, Period 6`};
+  }},
+  counselor:{to:()=>state.mail.cEmail,who:'Skyline Counselor',course:'SSR briefing · Mon 10/19, 8:00 AM',why:'Grades, plan, timeline and three asks',counselor:true,build(){ return ssrPacket(); }}
+};
+const MAIL_ORDER=['counselor','civ','cw','econ','bus','math','fr','bio'];
+function ssrPacket(){
+  const g=gpa(false);
+  const rows=courses().map(c=>{ const pr=proj(c); return `- ${c.meta.p} ${c.meta.short}: ${p2(pr.now)} ${curLetter(c)}${Math.abs(pr.plan-pr.now)>.004?`, plan ${p2(pr.plan)} ${letterOf(c,pr.plan)}`:''}`; });
+  const planned=[]; for(const c of courses()) for(const a of items(c)){ const pl=state.plan[String(a.id)]; if(pl&&pl.on&&isLever(c,a)) planned.push(`- ${c.meta.code}: ${a.name}`); }
+  const name=state.mail.cName.trim();
+  return {subject:'SSR briefing for Monday 10/19, 8:00 AM (Ankit Kolagotla, Class of 2027)',body:`Hi ${name||'there'},\n\nHere is a quick summary for our meeting on Monday 10/19 at 8:00 AM.\n\nWhere my grades are today (Canvas, ${DATA.syncedAt||'latest sync'}):\n${rows.join('\n')}\n- P5 TA for Accounting (study hall)\n\nTerm GPA across my 6 core classes: ${g.now.toFixed(2)} today, ${g.plan.toFixed(2)} if my current plan goes through. My goal for Nov 1 is 3.71 or higher.\n\nWhat I'm doing before Nov 1:\n${planned.length?planned.slice(0,14).join('\n'):'- Turning in all missing work, starting with Civics, Creative Writing, IB Business and IB Econ'}\n\nWhat I'm asking for:\n1. A counselor report around Nov 5 for UW that reflects my Nov 1 grades.\n2. Help explaining my junior-year medical situation in the counselor report (documentation is on file).\n3. A quick read of my UW Challenges (250 words) and Additional Information (300 words) drafts.\n\nApplication timeline:\n- Oct 28 to 30: KU Business Direct, ASU W.P. Carey\n- Oct 30 to Nov 1: Penn State, Pitt\n- Nov 10 to 12: UW Seattle\n- Nov 20 to Dec 20: Texas A&M, Western, Queen's, Toronto, UBC\n- Dec 28 to Jan 22: ED II decision and Common App regular decision\n\nThank you,\nAnkit Kolagotla`};
+}
+function mailFor(key){ const m=MAILS[key]; const built=m.build()||{subject:'',body:''}; const ed=state.mail.edits[key]; return {to:m.to()||'',subject:ed&&ed.subject!=null?ed.subject:built.subject,body:ed&&ed.body!=null?ed.body:built.body,edited:!!ed,built}; }
+function renderEmail(){
+  const sel=MAILS[state.mail.sel]?state.mail.sel:'counselor';
+  $('#mailList').innerHTML=MAIL_ORDER.map(k=>{ const m=MAILS[k]; const s=state.mail.sent[k]; return `<button class="whob" data-mail="${k}" aria-pressed="${k===sel}"><span class="n">${esc(m.who)}</span>${s?`<span class="pill ok">Sent ${esc(s)}</span>`:state.mail.edits[k]?'<span class="pill ice">Edited</span>':'<span class="pill">Draft</span>'}<span class="r">${esc(m.course)} · ${esc(m.why)}</span></button>`; }).join('');
+  const m=MAILS[sel]; const e=mailFor(sel);
+  const mailto=e.to?`mailto:${encodeURIComponent(e.to)}?subject=${encodeURIComponent(e.subject)}&body=${encodeURIComponent(e.body)}`:'';
+  $('#mailEditor').innerHTML=`
+    <div class="between wrapx"><div><div class="eyebrow">${esc(m.course)}</div><div class="h2" style="margin-top:4px">${esc(m.who)}</div></div><div class="row" style="gap:6px">${e.edited?'<button class="btn sm ghost" data-act="mailReset">Reset to live template</button>':''}<label class="row small" style="gap:6px;cursor:pointer"><input type="checkbox" class="chk" data-act="mailSent" ${state.mail.sent[sel]?'checked':''}>Sent</label></div></div>
+    ${m.counselor?`<div class="row wrapx" style="gap:8px"><input class="field sm" id="cName" data-bind="cName" placeholder="Counselor's name" value="${esc(state.mail.cName)}" style="flex:1;min-width:160px" aria-label="Counselor name"><input class="field sm" id="cEmail" data-bind="cEmail" placeholder="Counselor's email" value="${esc(state.mail.cEmail)}" style="flex:1;min-width:200px" aria-label="Counselor email"></div>`:''}
+    <div class="stack" style="gap:6px"><span class="eyebrow">To</span><div class="row" style="gap:8px"><span class="addr" style="flex:1">${e.to?esc(e.to):'Add the address above'}</span><button class="btn sm" data-act="copyTo" ${e.to?'':'disabled'}>Copy</button></div>${m.canvasInbox?`<div class="note">M. Chesko asks for study-guide requests through the Canvas message center. <a href="${CANVAS}/conversations" target="_blank" rel="noopener">Open Canvas Inbox ↗</a></div>`:''}</div>
+    <label class="stack" style="gap:6px"><span class="eyebrow">Subject</span><input class="field" id="mSubject" value="${esc(e.subject)}" data-mailfield="subject"></label>
+    <label class="stack" style="gap:6px"><span class="eyebrow">Body</span><textarea class="field mailbody" id="mBody" data-mailfield="body">${esc(e.body)}</textarea></label>
+    <div class="row wrapx" style="gap:8px"><button class="btn primary" data-act="copyMail">Copy subject + body</button><button class="btn" data-act="copyBody">Copy body</button>${mailto?`<a class="btn ghost" href="${esc(mailto)}" target="_blank" rel="noopener">Open in mail app</a>`:''}</div>
+    <p class="note">The mail-app button is a shortcut and may not open from inside every viewer. Copying always works.</p>`;
+}
+
+/* =====================================================================
+   EXTRACURRICULARS
+   ===================================================================== */
+function renderEC(){
+  const ec=state.ec; const now=new Date();
+  const hd=parseWhen('2026-10-31T23:59'); const hDone=ec.harvard.filter(x=>x[1]).length;
+  const coachTop=COACH_SCHOOLS.map(([id,n])=>`<tr><td style="font-weight:600;white-space:nowrap">${esc(n)}</td><td><select class="field sm" data-coachst="${id}" aria-label="${esc(n)} status">${COACH_ST.map((t,i)=>`<option value="${i}" ${(ec.coaches[id]|0)===i?'selected':''}>${t}</option>`).join('')}</select></td></tr>`).join('');
+  const r=(k,title,sub)=>{ const o=ec[k]; return `<div class="s6 glass pad stack"><div><div class="eyebrow">${sub}</div><div class="h2" style="margin-top:4px">${title}</div></div>
+    <label class="stack" style="gap:4px"><span class="between small"><span>Drafted</span><b class="mono">${o.pct}%</b></span><input type="range" min="0" max="100" step="5" value="${o.pct}" data-ec="${k}.pct" style="--p:${o.pct}%" aria-label="${title} percent drafted"></label>
+    <div class="cols" style="gap:10px">${[['sent','Professor emails sent'],['replied','Replies']].map(([f,l])=>`<div class="s6 well pad" style="padding:12px"><div class="xs muted">${l}</div><div class="row" style="gap:8px;margin-top:6px"><button class="btn sm" data-act="ecInc" data-k="${k}.${f}" data-v="-1" aria-label="Decrease">−</button><b class="mid" style="min-width:44px;text-align:center">${o[f]}</b><button class="btn sm" data-act="ecInc" data-k="${k}.${f}" data-v="1" aria-label="Increase">+</button></div></div>`).join('')}</div>
+    <input class="field sm" placeholder="Next action" value="${esc(o.next)}" data-ec="${k}.next" aria-label="${title} next action"></div>`; };
+  const biz=ec.biz; const bp=biz.goal?clamp(biz.booked/biz.goal*100,0,100):0;
+  $('#ecGrid').innerHTML=`
+    <div class="s6 glass deep pad stack"><div class="between"><div><div class="eyebrow">Round 1 due Sat Oct 31</div><div class="h2" style="margin-top:4px">Harvard Presentation Competition</div></div><div style="text-align:right"><div class="mid ice" data-cd="${hd.getTime()}" data-cdfmt="days">${Math.max(0,Math.ceil((hd-now)/DAY))}d</div><div class="xs muted">left</div></div></div>
+      <div class="prog"><i style="width:${ec.harvard.length?hDone/ec.harvard.length*100:0}%"></i></div>
+      <div class="stack" style="gap:6px">${ec.harvard.map((m,i)=>`<div class="row" style="gap:10px"><input type="checkbox" class="chk" data-hv="${i}" ${m[1]?'checked':''} aria-label="${esc(m[0])}"><input class="field sm" value="${esc(m[0])}" data-hvt="${i}" style="${m[1]?'text-decoration:line-through;color:var(--ink-3)':''}" aria-label="Milestone ${i+1}"><button class="btn sm ghost" data-act="hvDel" data-i="${i}" aria-label="Remove milestone">×</button></div>`).join('')}</div>
+      <button class="btn sm" data-act="hvAdd">Add milestone</button></div>
+    <div class="s6 glass pad stack"><div><div class="eyebrow">Snohomish United ECNL/EA · 2-year captain</div><div class="h2" style="margin-top:4px">D3 recruiting engine</div></div>
+      <div class="row wrapx" style="gap:8px">${[['clip','Clip highlights in Trace'],['cut','Cut the 2:30 reel'],['upload','Upload and get a link']].map(([k,l],i)=>`<label class="row well small" style="gap:8px;padding:8px 10px;cursor:pointer"><input type="checkbox" class="chk" data-reel="${k}" ${ec.reel[k]?'checked':''}>${i+1}. ${l}</label>`).join('')}</div>
+      <input class="field sm" placeholder="Highlight reel link" value="${esc(ec.reel.link)}" data-ec="reel.link" aria-label="Highlight reel link">
+      <div class="scrollx"><table class="t"><thead><tr><th>Coach</th><th>Status</th></tr></thead><tbody>${coachTop}</tbody></table></div>
+      <p class="note">Setting Denison, Case Western or Babson to "Pre-read support" turns on that school's coach toggle in the ED II matrix.</p></div>
+    ${r('r1','Urban Heat Inequality: GIS paper + website','Research paper #1')}
+    ${r('r2','Government announcements, tariffs and market microstructure (PFOF)','Research paper #2')}
+    <div class="s6 glass pad stack"><div><div class="eyebrow">501(c)(3) nonprofit</div><div class="h2" style="margin-top:4px">Kick for Cause</div></div><textarea class="field" rows="5" data-ec="kfc" placeholder="Sessions, volunteers, donors, next event">${esc(ec.kfc)}</textarea></div>
+    <div class="s6 glass pad stack"><div><div class="eyebrow">Residential exterior service business</div><div class="h2" style="margin-top:4px">$${Number(biz.booked||0).toLocaleString()} of $${Number(biz.goal||0).toLocaleString()}</div></div><div class="prog"><i style="width:${bp}%"></i></div><div class="row wrapx" style="gap:8px"><label class="stack" style="gap:4px;flex:1;min-width:120px"><span class="xs muted">Booked ($)</span><input class="field sm" type="number" min="0" step="50" value="${biz.booked}" data-ec="biz.booked"></label><label class="stack" style="gap:4px;flex:1;min-width:120px"><span class="xs muted">Goal ($)</span><input class="field sm" type="number" min="0" step="500" value="${biz.goal}" data-ec="biz.goal"></label></div><textarea class="field" rows="3" data-ec="biz.notes" placeholder="Jobs, quotes, follow-ups">${esc(biz.notes)}</textarea></div>`;
+}
+
+/* =====================================================================
+   FOCUS: timer, synth, habits, debrief
+   ===================================================================== */
+const PRESETS={'25/5':[25,5],'50/10':[50,10],'80/10':[80,10]};
+const T={running:false,phase:'work',remain:50*60,endsAt:0,iv:null,lock:null};
+function presetMins(){ return PRESETS[state.focus.preset]||[50,10]; }
+function renderFocus(){
+  if(!T.running&&T.remain===50*60&&state.focus.preset!=='50/10') T.remain=presetMins()[0]*60;
+  const q=buildQueue().slice(0,10);
+  $('#timerCard').innerHTML=`<div class="between"><div><div class="eyebrow">Pacing timer</div><div class="h2" style="margin-top:4px" id="tPhase">${T.phase==='work'?'Focus block':'Break'}</div></div><div class="seg">${Object.keys(PRESETS).map(k=>`<button data-preset="${k}" aria-pressed="${state.focus.preset===k}">${k}</button>`).join('')}</div></div>
+    <div class="ring"><svg viewBox="0 0 200 200" aria-hidden="true"><circle cx="100" cy="100" r="88" fill="none" stroke="rgba(255,255,255,.08)" stroke-width="8"/><circle id="tArc" cx="100" cy="100" r="88" fill="none" stroke="url(#tg)" stroke-width="8" stroke-linecap="round" stroke-dasharray="552.92" stroke-dashoffset="0"/><defs><linearGradient id="tg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#36E2C4"/><stop offset="1" stop-color="#8BEFFF"/></linearGradient></defs></svg><div class="lbl"><b id="tTime">${fmtT(T.remain)}</b><span class="xs muted" id="tSub">${T.running?'running':'ready'}</span></div></div>
+    <label class="stack" style="gap:6px"><span class="eyebrow">Working on</span><select class="field" data-bind="ftask"><option value="">Pick from the recovery queue</option>${q.map(r=>{ const v=r.k==='bundle'?`${r.c.meta.code}: clear missing work`:`${r.c.meta.code}: ${r.a.name}`; return `<option ${state.focus.task===v?'selected':''}>${esc(v)}</option>`; }).join('')}</select></label>
+    <div class="row wrapx" style="gap:8px;justify-content:center"><button class="btn primary" data-act="tToggle" id="tBtn">${T.running?'Pause':'Start'}</button><button class="btn" data-act="tReset">Reset</button><button class="btn ghost" data-act="tSkip">Skip to ${T.phase==='work'?'break':'focus'}</button></div>`;
+  paintTimer();
+  $('#synthCard').innerHTML=`<div class="between"><div><div class="eyebrow">Web Audio synth</div><div class="h2" style="margin-top:4px">40 Hz gamma pulse + brown noise</div></div><button class="btn ${S.on?'':'primary'}" data-act="synth">${S.on?'Stop':'Play'}</button></div>
+    <div class="cols" style="gap:14px"><label class="s6 stack" style="gap:4px"><span class="between small"><span>40 Hz pulse</span><b class="mono">${state.focus.g}%</b></span><input type="range" min="0" max="100" value="${state.focus.g}" data-sv="g" style="--p:${state.focus.g}%" aria-label="40 hertz volume"></label><label class="s6 stack" style="gap:4px"><span class="between small"><span>Brown noise</span><b class="mono">${state.focus.b}%</b></span><input type="range" min="0" max="100" value="${state.focus.b}" data-sv="b" style="--p:${state.focus.b}%" aria-label="Brown noise volume"></label></div>
+    <p class="note">A 200 Hz tone pulsed 40 times a second under soft brown noise. Keep it quiet; headphones work best.</p>`;
+  renderHabits(); renderDebrief();
+  $('#brain').value=state.brain||'';
+}
+function fmtT(s){ s=Math.max(0,Math.round(s)); return `${String(Math.floor(s/60)).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`; }
+function paintTimer(){
+  const total=(T.phase==='work'?presetMins()[0]:presetMins()[1])*60;
+  const arc=$('#tArc'); if(arc) arc.setAttribute('stroke-dashoffset',String(552.92*(1-clamp(T.remain/total,0,1))));
+  const t=$('#tTime'); if(t) t.textContent=fmtT(T.remain);
+  const sb=$('#tSub'); if(sb) sb.textContent=T.running?(T.phase==='work'?'focus':'break'):'paused';
+  const ph=$('#tPhase'); if(ph) ph.textContent=T.phase==='work'?'Focus block':'Break';
+  const b=$('#tBtn'); if(b) b.textContent=T.running?'Pause':'Start';
+}
+function tStart(){ T.running=true; T.endsAt=Date.now()+T.remain*1000; clearInterval(T.iv); T.iv=setInterval(tTick,250); try{ navigator.wakeLock&&navigator.wakeLock.request('screen').then(l=>T.lock=l).catch(()=>{}); }catch(e){} paintTimer(); }
+function tPause(){ T.running=false; clearInterval(T.iv); T.remain=Math.max(0,(T.endsAt-Date.now())/1000); try{ T.lock&&T.lock.release(); }catch(e){} paintTimer(); }
+function tTick(){ T.remain=Math.max(0,(T.endsAt-Date.now())/1000); if(T.remain<=0){ chime(); T.phase=T.phase==='work'?'break':'work'; T.remain=(T.phase==='work'?presetMins()[0]:presetMins()[1])*60; T.endsAt=Date.now()+T.remain*1000; toast(T.phase==='break'?'Block done. Take your break.':'Break over. Next focus block.','ok'); } paintTimer(); }
+const S={ctx:null,on:false,nodes:null};
+function audioCtx(){ const AC=window.AudioContext||window.webkitAudioContext; if(!AC) return null; if(!S.ctx) S.ctx=new AC(); if(S.ctx.state==='suspended') S.ctx.resume(); return S.ctx; }
+function synthStart(){
+  const ctx=audioCtx(); if(!ctx){ toast('This browser has no Web Audio support','crit'); return; }
+  const master=ctx.createGain(); master.gain.value=0; master.connect(ctx.destination);
+  const len=ctx.sampleRate*4, buf=ctx.createBuffer(1,len,ctx.sampleRate), d=buf.getChannelData(0); let last=0;
+  for(let i=0;i<len;i++){ const w=Math.random()*2-1; last=(last+.02*w)/1.02; d[i]=last*3.2; }
+  const noise=ctx.createBufferSource(); noise.buffer=buf; noise.loop=true;
+  const bg=ctx.createGain(); bg.gain.value=state.focus.b/100*.9; noise.connect(bg).connect(master);
+  const car=ctx.createOscillator(); car.type='sine'; car.frequency.value=200;
+  const am=ctx.createGain(); am.gain.value=.5;
+  const lfo=ctx.createOscillator(); lfo.type='sine'; lfo.frequency.value=40;
+  const lg=ctx.createGain(); lg.gain.value=.5; lfo.connect(lg).connect(am.gain);
+  const gg=ctx.createGain(); gg.gain.value=state.focus.g/100*.35; car.connect(am).connect(gg).connect(master);
+  noise.start(); car.start(); lfo.start();
+  master.gain.setTargetAtTime(.8,ctx.currentTime,.4);
+  S.nodes={master,noise,car,lfo,bg,gg}; S.on=true;
+}
+function synthStop(){ if(!S.nodes) return; const {master,noise,car,lfo}=S.nodes; const ctx=S.ctx; master.gain.setTargetAtTime(0,ctx.currentTime,.25); setTimeout(()=>{ try{noise.stop();car.stop();lfo.stop();master.disconnect();}catch(e){} },900); S.nodes=null; S.on=false; }
+function synthVol(){ if(!S.nodes) return; const t=S.ctx.currentTime; S.nodes.bg.gain.setTargetAtTime(state.focus.b/100*.9,t,.1); S.nodes.gg.gain.setTargetAtTime(state.focus.g/100*.35,t,.1); }
+function chime(){ const ctx=audioCtx(); if(!ctx) return; const t=ctx.currentTime; [880,660,990].forEach((f,i)=>{ const o=ctx.createOscillator(), g=ctx.createGain(); o.frequency.value=f; o.type='sine'; g.gain.setValueAtTime(0,t+i*.18); g.gain.linearRampToValueAtTime(.18,t+i*.18+.02); g.gain.exponentialRampToValueAtTime(.0001,t+i*.18+.6); o.connect(g).connect(ctx.destination); o.start(t+i*.18); o.stop(t+i*.18+.65); }); }
+function streak(id){ let d=new Date(); const today=state.habits[dkey(d)]; if(!(today&&today[id])) d=addDays(d,-1); let n=0; for(let i=0;i<400;i++){ const h=state.habits[dkey(d)]; if(h&&h[id]){ n++; d=addDays(d,-1); } else break; } return n; }
+function renderHabits(){
+  const k=dkey(); const today=state.habits[k]||{}; const done=HABITS.filter(([id])=>today[id]).length;
+  const soc=state.soccer[k]||'practice';
+  $('#habitCard').innerHTML=`<div class="between wrapx" style="margin-bottom:8px"><div><div class="eyebrow">Bio-rhythm · today ${done}/${HABITS.length}</div><div class="h2" style="margin-top:4px">Habits and streaks</div></div><div class="seg" aria-label="Soccer today">${[['practice','Practice'],['flex','Flex turf'],['rest','Rest']].map(([v,l])=>`<button data-soccer="${v}" aria-pressed="${soc===v}">${l}</button>`).join('')}</div></div>
+   ${HABITS.map(([id,l])=>{ const dots=[]; for(let i=13;i>=0;i--){ const h=state.habits[dkey(addDays(new Date(),-i))]; dots.push(`<i class="${h&&h[id]?'on':''}"></i>`); } const s=streak(id); return `<div class="hab"><input type="checkbox" class="chk" data-habit="${id}" ${today[id]?'checked':''} aria-label="${esc(l)}"><div class="minw0"><div class="small" style="font-weight:600">${esc(l)}</div><div class="dots" aria-hidden="true" style="margin-top:5px">${dots.join('')}</div></div><span class="streak">${s}d</span></div>`; }).join('')}`;
+}
+function renderDebrief(){
+  const k=dkey(); const d=state.debrief[k]||{};
+  $('#debriefCard').innerHTML=`<div class="between"><div><div class="eyebrow">${esc(niceDay(new Date()))}</div><div class="h2" style="margin-top:4px">Nightly debrief</div></div><span class="note">Lock in by 11:30 PM</span></div>
+   ${[['won','What moved today'],['slip','What slipped, and why'],['first','First task tomorrow at 5:15']].map(([f,l])=>`<label class="stack" style="gap:4px"><span class="small muted">${l}</span><textarea class="field" rows="2" data-deb="${f}">${esc(d[f]||'')}</textarea></label>`).join('')}`;
+}
+
+/* =====================================================================
+   SYNC
+   ===================================================================== */
+function renderSync(){
+  const n=courses().length, na=courses().reduce((s,c)=>s+c.assignments.length,0);
+  const miss=courses().reduce((s,c)=>s+needsAction(c).length,0);
+  $('#syncStatus').innerHTML=`<div class="between"><div class="h2">Current data</div><span class="pill ${state.canvas?'ok':'ice'}">${state.canvas?'Imported':'Oct 18 snapshot'}</span></div>
+   <dl class="kv"><dt>Canvas synced</dt><dd class="mono">${esc(DATA.syncedAt||'unknown')}</dd><dt>Imported here</dt><dd class="mono">${state.lastImport?esc(new Date(state.lastImport.at).toLocaleString()):'not yet'}</dd><dt>Courses</dt><dd class="mono">${n}</dd><dt>Assignments</dt><dd class="mono">${na}</dd><dt>Missing or at 0</dt><dd class="mono">${miss}</dd><dt>Plan items checked</dt><dd class="mono">${Object.values(state.plan).filter(p=>p&&p.on).length}</dd></dl>`;
+  const df=state.lastDiff; const card=$('#diffCard');
+  if(df&&df.rows&&df.rows.length){ card.hidden=false; card.innerHTML=`<div class="sectitle"><div class="h2">What changed in the last sync</div><span class="note">${esc(df.when||'')}</span></div><div class="scrollx"><table class="t"><thead><tr><th>Course</th><th>Before</th><th>After</th><th>Change</th><th>Missing</th></tr></thead><tbody>${df.rows.map(r=>`<tr><td><span class="code">${esc(r.code)}</span> ${esc(r.name)}</td><td class="mono">${p2(r.b)}</td><td class="mono">${p2(r.a)}</td><td class="mono ${r.a-r.b>.004?'ok':r.a-r.b<-.004?'crit':'faint'}">${fin(r.a)&&fin(r.b)?sgn(r.a-r.b):'new'}</td><td class="mono">${r.mb==null?'':r.mb+' → '}${r.ma}</td></tr>`).join('')}</tbody></table></div>${df.graded&&df.graded.length?`<div class="dsec"><div class="eyebrow" style="margin-bottom:6px">Newly graded · ${df.graded.length}</div>${df.graded.slice(0,14).map(g=>`<div class="row small" style="padding:3px 0"><span class="code">${esc(g.code)}</span><span class="minw0 trunc">${esc(g.name)}</span><span class="mono" style="margin-left:auto">${esc(g.sc)}</span></div>`).join('')}</div>`:''}`; }
+  else card.hidden=true;
+}
+function snapshot(){ const m={}; if(!DATA) return m; for(const c of courses()) m[c.id]={code:c.meta.code,name:c.meta.short,s:c.score,miss:needsAction(c).length,graded:new Set(c.assignments.filter(a=>a.score!=null).map(a=>String(a.id)))}; return m; }
+function importText(text,source){
+  let raw;
+  try{ raw=JSON.parse(text); }catch(e){ toast('That is not valid JSON. Make sure the whole file was copied.','crit'); return false; }
+  if(raw&&raw.app==='ankit-command-os'&&raw.state){ state=deepMerge(defaultState(),raw.state); loadData(); refresh(); syncCoachToEd(); toast('Backup restored','ok'); return true; }
+  let norm; try{ norm=normalize(raw); }catch(e){ toast(e.message,'crit'); return false; }
+  const before=snapshot();
+  state.canvas=norm; state.lastImport={at:new Date().toISOString(),source}; loadData();
+  const rows=[], graded=[];
+  for(const c of courses()){ const b=before[c.id]; rows.push({code:c.meta.code,name:c.meta.short,b:b?b.s:null,a:c.score,mb:b?b.miss:null,ma:needsAction(c).length}); if(b) for(const a of c.assignments) if(a.score!=null&&!b.graded.has(String(a.id))) graded.push({code:c.meta.code,name:a.name,sc:`${pts(a.score)}/${pts(a.possible)}`}); }
+  state.lastDiff={when:`Canvas ${norm.syncedAt||''} · imported ${new Date().toLocaleString()}`,rows,graded};
+  save(); refresh(); toast(`Synced ${norm.courses.length} courses from Canvas`,'ok');
+  return true;
+}
+function readFile(f){ if(!f) return; if(f.size>20*1024*1024){ toast('That file is over 20 MB. Pick the Canvas sync JSON.','crit'); return; } const r=new FileReader(); r.onload=()=>importText(String(r.result),f.name); r.onerror=()=>toast('Could not read that file','crit'); r.readAsText(f); }
+
+/* =====================================================================
+   Master State export
+   ===================================================================== */
+function masterState(){
+  const g=gpa(false), gf=gpa(true); const now=new Date();
+  const L=[];
+  L.push('# Ankit Command OS · Master State');
+  L.push(`Generated ${now.toLocaleString()} · Canvas data ${DATA.syncedAt||'unknown'}${state.canvas?'':' (Oct 18 snapshot)'}`);
+  L.push('');
+  L.push('## Grades (Canvas → plan)');
+  L.push('| Period | Course | Canvas | Plan | Missing/0 | Next due |');
+  L.push('|---|---|---|---|---|---|');
+  for(const c of courses()){ const pr=proj(c); const nx=items(c).filter(a=>a.score==null&&!isAwaiting(a)&&a.due&&a.due>=sod(now)).sort((a,b)=>a.due-b.due)[0]; L.push(`| ${c.meta.p} | ${c.meta.short} | ${p2(pr.now)} ${curLetter(c)} | ${p2(pr.plan)} ${letterOf(c,pr.plan)} | ${needsAction(c).length} | ${nx?nx.name+' ('+md(nx.due)+')':''} |`); }
+  L.push('| P5 | TA for Accounting | study hall | | | |');
+  L.push('');
+  L.push(`GPA, 6 core: ${g.now.toFixed(2)} → ${g.plan.toFixed(2)} (target 3.71 to 3.86). With French 3A: ${gf.now.toFixed(2)} → ${gf.plan.toFixed(2)}.`);
+  L.push(`Assumptions: assignments ${state.defaults.work}%, tests ${state.defaults.test}%, window ${state.win==='nov1'?'through Nov 1':'all'}, floor mode ${state.floor?'on':'off'}.`);
+  L.push('');
+  L.push('## Checked plan items');
+  let any=false; for(const c of courses()) for(const a of items(c)){ const pl=state.plan[String(a.id)]; if(pl&&pl.on&&isLever(c,a)){ any=true; L.push(`- [x] ${c.meta.code} · ${a.name} (${pts(a.possible)} pts) at ${pts(pctFor(c,a))}%`); } }
+  if(!any) L.push('- none checked');
+  L.push('');
+  L.push('## Priority queue (top 10)');
+  buildQueue().slice(0,10).forEach((r,i)=>L.push(`${i+1}. ${r.c.meta.code} · ${r.k==='bundle'?`Clear ${r.bundle.length} missing items`:r.a.name} · ${actionText(r)} · +${r.g.toFixed(1)}%`));
+  L.push('');
+  L.push('## Habits (current streaks)');
+  const td=state.habits[dkey()]||{};
+  HABITS.forEach(([id,l])=>L.push(`- ${td[id]?'[x]':'[ ]'} ${l} · ${streak(id)}-day streak`));
+  L.push('');
+  L.push('## Brain dump'); L.push((state.brain||'').trim()||'(empty)'); L.push('');
+  const db=state.debrief[dkey()]; L.push('## Tonight\'s debrief'); L.push(db?`- Moved: ${db.won||''}\n- Slipped: ${db.slip||''}\n- First task tomorrow: ${db.first||''}`:'(not filled in)'); L.push('');
+  const ec=state.ec;
+  L.push('## Extracurriculars');
+  L.push(`- Harvard Presentation Round 1 (Oct 31): ${ec.harvard.filter(x=>x[1]).length}/${ec.harvard.length} milestones · next: ${(ec.harvard.find(x=>!x[1])||['all done'])[0]}`);
+  L.push(`- Research #1 Urban Heat GIS: ${ec.r1.pct}% drafted · ${ec.r1.sent} professor emails, ${ec.r1.replied} replies${ec.r1.next?` · next: ${ec.r1.next}`:''}`);
+  L.push(`- Research #2 Announcements, tariffs, PFOF: ${ec.r2.pct}% drafted · ${ec.r2.sent} professor emails, ${ec.r2.replied} replies${ec.r2.next?` · next: ${ec.r2.next}`:''}`);
+  L.push(`- D3 reel: ${['clip','cut','upload'].filter(k=>ec.reel[k]).length}/3 steps · coaches: ${COACH_SCHOOLS.map(([id,n])=>`${n} ${COACH_ST[ec.coaches[id]|0]}`).join('; ')}`);
+  L.push(`- Exterior service business: $${ec.biz.booked} of $${ec.biz.goal}`);
+  if(ec.kfc) L.push(`- Kick for Cause: ${ec.kfc.replace(/\n/g,' ')}`);
+  L.push('');
+  L.push('## ED II matrix');
+  [...edScores()].sort((a,b)=>b.comp-a.comp).forEach((s,i)=>L.push(`${i+1}. ${s.name} · composite ${s.comp.toFixed(1)} · fit ${s.fit.toFixed(0)} · odds ${s.lo} to ${s.hi}%${s.coach?' (coach)':''} · slot value ${s.ev.toFixed(1)}`));
+  L.push('');
+  L.push('## Application waves');
+  WAVES.forEach(w=>{ const st=w.s.map(([id,n])=>({n,s:state.waves[id]|0})).filter(x=>x.s>0); L.push(`- Wave ${w.n} (${w.when}): ${st.length?st.map(x=>`${x.n} ${WAVE_ST[x.s]}`).join('; '):'not started'}`); });
+  L.push('');
+  const compact={app:'ankit-command-os',v:1,generated:now.toISOString(),canvasSyncedAt:DATA.syncedAt,
+    grades:courses().map(c=>{ const pr=proj(c); return {id:c.id,code:c.meta.code,now:+(pr.now||0).toFixed(2),letter:curLetter(c),plan:+(pr.plan||0).toFixed(2),planLetter:letterOf(c,pr.plan),missing:needsAction(c).map(a=>a.name)}; }),
+    gpa:{core:{now:+g.now.toFixed(2),plan:+g.plan.toFixed(2)},withFrench:{now:+gf.now.toFixed(2),plan:+gf.plan.toFixed(2)}},
+    plan:Object.fromEntries(Object.entries(state.plan).filter(([,v])=>v&&v.on)),
+    habitsToday:td,ec:state.ec,ed:state.ed,waves:state.waves};
+  L.push('```json'); L.push(JSON.stringify(compact)); L.push('```');
+  return L.join('\n');
+}
+
+/* =====================================================================
+   Events
+   ===================================================================== */
+function setLever(cid,aid,on){ const k=String(aid); const cur=state.plan[k]||{}; state.plan[k]={...cur,on}; }
+function syncCoachToEd(){ const map={den:'den',cwru:'cwru',bab:'bab'}; for(const k of Object.keys(map)) if((state.ec.coaches[k]|0)===4) state.ed.coach[map[k]]=true; }
+const armed={};
+function twoStep(btn,key,label,fn){ if(armed[key]){ clearTimeout(armed[key]); armed[key]=null; btn.textContent=label; fn(); return; } const orig=btn.textContent; btn.textContent='Click again to confirm'; armed[key]=setTimeout(()=>{ btn.textContent=orig; armed[key]=null; },4000); }
+
+document.addEventListener('click',e=>{
+  const tab=e.target.closest('[data-tab]'); if(tab){ setTab(tab.dataset.tab); return; }
+  const go=e.target.closest('[data-go]'); if(go){ setTab(go.dataset.go); return; }
+  const mb=e.target.closest('[data-mail]'); if(mb){ state.mail.sel=mb.dataset.mail; save(); renderEmail(); return; }
+  const wb=e.target.closest('[data-win]'); if(wb){ state.win=wb.dataset.win; refresh(); return; }
+  const pb=e.target.closest('[data-preset]'); if(pb){ state.focus.preset=pb.dataset.preset; if(!T.running){ T.phase='work'; T.remain=presetMins()[0]*60; } save(); renderFocus(); return; }
+  const sb=e.target.closest('[data-soccer]'); if(sb){ state.soccer[dkey()]=sb.dataset.soccer; save(); renderHabits(); return; }
+  const b=e.target.closest('[data-act]'); if(!b) return;
+  const act=b.dataset.act;
+  switch(act){
+    case 'copyMaster': copyText(masterState(),'Master State copied. Paste it into Claude or Gemini.'); break;
+    case 'copyBackup': copyText(JSON.stringify({app:'ankit-command-os',v:1,exported:new Date().toISOString(),state}),'Full backup copied'); break;
+    case 'copySSR': { const p=ssrPacket(); copyText(`Subject: ${p.subject}\n\n${p.body}`,'SSR briefing packet copied'); break; }
+    case 'loadPreset': PRESET.forEach(id=>setLever(0,id,true)); refresh(); toast('Nov 1 recovery plan loaded','ok'); break;
+    case 'checkWindow': for(const c of courses()) for(const a of items(c)) if(isLever(c,a)) setLever(c.id,a.id,true); refresh(); toast('Everything due by Nov 1 is checked'); break;
+    case 'clearPlan': for(const k of Object.keys(state.plan)) state.plan[k].on=false; refresh(); break;
+    case 'courseAll': { const c=C(b.dataset.id); for(const a of items(c)) if(isLever(c,a)) setLever(c.id,a.id,b.dataset.v==='1'); refresh(); break; }
+    case 'delCustom': state.custom=state.custom.filter(x=>x.id!==b.dataset.id); delete state.plan[b.dataset.id]; refresh(); break;
+    case 'openCourse': openCourse(b.dataset.id); break;
+    case 'closeDrawer': $('#drawer').hidden=true; break;
+    case 'closeModal': $('#copyModal').hidden=true; break;
+    case 'openMail': state.mail.sel=b.dataset.key; setTab('email'); break;
+    case 'copyTo': copyText(mailFor(state.mail.sel).to,'Address copied'); break;
+    case 'copyBody': copyText($('#mBody').value,'Email body copied'); break;
+    case 'copyMail': copyText(`Subject: ${$('#mSubject').value}\n\n${$('#mBody').value}`,'Subject and body copied'); break;
+    case 'mailReset': delete state.mail.edits[state.mail.sel]; save(); renderEmail(); break;
+    case 'mailSent': { const k=state.mail.sel; if(b.checked) state.mail.sent[k]=md(new Date()); else delete state.mail.sent[k]; save(); renderEmail(); break; }
+    case 'edReset': state.ed.w={odds:9,prog:7,out:7,cost:5,soc:4,camp:4}; state.ed.r=JSON.parse(JSON.stringify(ED_R0)); save(); renderAdmissions(); break;
+    case 'ecInc': { const [k,f]=b.dataset.k.split('.'); state.ec[k][f]=Math.max(0,(state.ec[k][f]|0)+(+b.dataset.v)); save(); renderEC(); break; }
+    case 'hvAdd': state.ec.harvard.push(['New milestone',false]); save(); renderEC(); break;
+    case 'hvDel': state.ec.harvard.splice(+b.dataset.i,1); save(); renderEC(); break;
+    case 'tToggle': T.running?tPause():tStart(); break;
+    case 'tReset': tPause(); T.phase='work'; T.remain=presetMins()[0]*60; paintTimer(); break;
+    case 'tSkip': { const was=T.running; tPause(); T.phase=T.phase==='work'?'break':'work'; T.remain=(T.phase==='work'?presetMins()[0]:presetMins()[1])*60; if(was) tStart(); renderFocus(); break; }
+    case 'synth': S.on?synthStop():synthStart(); renderFocus(); break;
+    case 'importPaste': importText($('#pasteBox').value,'paste'); break;
+    case 'resetCanvas': twoStep(b,'rc','Restore Oct 18 Canvas snapshot',()=>{ state.canvas=null; state.lastImport=null; state.lastDiff=null; loadData(); refresh(); toast('Oct 18 snapshot restored'); }); break;
+    case 'resetAll': twoStep(b,'ra','Erase everything',()=>{ state=defaultState(); state.tab='sync'; try{localStorage.removeItem(KEY);}catch(e){} loadData(); refresh(); toast('Everything erased'); }); break;
+  }
+});
+document.addEventListener('change',e=>{
+  const t=e.target;
+  if(t.dataset.lever){ const [cid,aid]=t.dataset.lever.split(/:(.+)/); setLever(cid,aid,t.checked); refresh(); return; }
+  if(t.dataset.bundle){ const c=C(t.dataset.bundle); const bun=items(c).filter(a=>isLever(c,a)&&['zero','missing'].includes(kind(c,a))&&!ruleFor(c,a)); bun.forEach(a=>setLever(c.id,a.id,t.checked)); refresh(); return; }
+  if(t.dataset.pct){ const [cid,aid]=t.dataset.pct.split(/:(.+)/); const c=C(cid); const a=items(c).find(x=>String(x.id)===aid); if(!a) return; const v=clamp(+t.value||0,0,capPct(c,a)); state.plan[aid]={...(state.plan[aid]||{on:false}),pct:v}; refresh(); return; }
+  if(t.dataset.wave){ state.waves[t.dataset.wave]=+t.value; save(); renderWaves(); return; }
+  if(t.dataset.coach){ state.ed.coach[t.dataset.coach]=t.checked; save(); renderAdmissions(); return; }
+  if(t.dataset.edr){ const [s,k]=t.dataset.edr.split(':'); state.ed.r[s][k]=clamp(Math.round(+t.value||1),1,10); save(); renderAdmissions(); return; }
+  if(t.dataset.coachst){ state.ec.coaches[t.dataset.coachst]=+t.value; if(+t.value===4&&['den','cwru','bab'].includes(t.dataset.coachst)){ state.ed.coach[t.dataset.coachst]=true; toast('Coach toggle switched on in the ED II matrix','ok'); } save(); return; }
+  if(t.dataset.hv){ state.ec.harvard[+t.dataset.hv][1]=t.checked; save(); renderEC(); return; }
+  if(t.dataset.reel){ state.ec.reel[t.dataset.reel]=t.checked; save(); return; }
+  if(t.dataset.habit){ const k=dkey(); state.habits[k]=state.habits[k]||{}; state.habits[k][t.dataset.habit]=t.checked; save(); renderHabits(); return; }
+  if(t.id==='floor'){ state.floor=t.checked; refresh(); return; }
+  if(t.id==='withFrench'){ state.withFrench=t.checked; refresh(); return; }
+  if(t.id==='cfCourse'){ fillGroups(); return; }
+  if(t.id==='filePick'){ readFile(t.files&&t.files[0]); t.value=''; return; }
+  if(t.dataset.bind==='ftask'){ state.focus.task=t.value; save(); return; }
+  if(t.dataset.ec&&(t.type==='number')){ const [k,f]=t.dataset.ec.split('.'); state.ec[k][f]=Math.max(0,+t.value||0); save(); renderEC(); return; }
+});
+document.addEventListener('input',e=>{
+  const t=e.target;
+  if(t.id==='defWork'||t.id==='defTest'){ state.defaults[t.id==='defWork'?'work':'test']=+t.value; t.style.setProperty('--p',((t.value-t.min)/(t.max-t.min)*100)+'%'); $('#'+(t.id==='defWork'?'workOut':'testOut')).textContent=t.value+'%'; clearTimeout(t._d); t._d=setTimeout(refresh,120); return; }
+  if(t.dataset.edw){ state.ed.w[t.dataset.edw]=+t.value; t.style.setProperty('--p',t.value*10+'%'); t.closest('label').querySelector('b').textContent=t.value; save(); clearTimeout(t._d); t._d=setTimeout(()=>{ const sc=edScores(); drawEdChart(sc); const keep=document.activeElement; renderAdmissions(); if(keep&&keep.dataset&&keep.dataset.edw){ const n=$(`[data-edw="${keep.dataset.edw}"]`); n&&n.focus(); } },140); return; }
+  if(t.dataset.sv){ state.focus[t.dataset.sv]=+t.value; t.style.setProperty('--p',t.value+'%'); t.closest('label').querySelector('b').textContent=t.value+'%'; synthVol(); save(); return; }
+  if(t.dataset.ec&&t.type==='range'){ const [k,f]=t.dataset.ec.split('.'); state.ec[k][f]=+t.value; t.style.setProperty('--p',t.value+'%'); t.closest('label').querySelector('b').textContent=t.value+'%'; save(); return; }
+  if(t.dataset.ec&&t.type!=='number'){ const parts=t.dataset.ec.split('.'); if(parts.length===1) state.ec[parts[0]]=t.value; else state.ec[parts[0]][parts[1]]=t.value; save(); return; }
+  if(t.dataset.hvt){ state.ec.harvard[+t.dataset.hvt][0]=t.value; save(); return; }
+  if(t.dataset.deb){ const k=dkey(); state.debrief[k]=state.debrief[k]||{}; state.debrief[k][t.dataset.deb]=t.value; save(); return; }
+  if(t.dataset.mailfield){ const k=state.mail.sel; const cur=mailFor(k); const ed=state.mail.edits[k]||{subject:cur.subject,body:cur.body}; ed[t.dataset.mailfield]=t.value; state.mail.edits[k]=ed; save(); return; }
+  if(t.dataset.bind==='cName'||t.dataset.bind==='cEmail'){ state.mail[t.dataset.bind]=t.value; save(); clearTimeout(t._d); t._d=setTimeout(()=>{ const id=t.id, pos=t.selectionStart; renderEmail(); const n=$('#'+id); if(n){ n.focus(); try{n.setSelectionRange(pos,pos);}catch(err){} } },400); return; }
+  if(t.id==='brain'){ state.brain=t.value; save(); $('#brainSaved').textContent='Saved'; return; }
+});
+$('#pasteBox').addEventListener('paste',e=>{ const txt=(e.clipboardData||window.clipboardData).getData('text'); if(txt&&txt.trim().startsWith('{')){ e.preventDefault(); $('#pasteBox').value=txt.slice(0,2000)+(txt.length>2000?'\n…':''); importText(txt,'paste'); } });
+$('#customForm').addEventListener('submit',e=>{ e.preventDefault(); const name=$('#cfName').value.trim(); const ptsV=+$('#cfPts').value; if(!name||!(ptsV>0)){ toast('Add a name and the point value','crit'); return; } state.custom.push({id:'x-'+Date.now().toString(36),course:+$('#cfCourse').value,gid:+$('#cfGroup').value,name,possible:ptsV,due:$('#cfDue').value||dkey(addDays(new Date(),3))}); $('#cfName').value=''; $('#cfPts').value=''; refresh(); toast('Projected assignment added'); });
+document.addEventListener('toggle',e=>{ const d=e.target; if(d.classList&&d.classList.contains('wi')){ state.open[d.dataset.cid]=d.open; save(); } },true);
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'){ $('#drawer').hidden=true; $('#copyModal').hidden=true; return; }
+  const tg=e.target; if(tg&&(tg.tagName==='INPUT'||tg.tagName==='TEXTAREA'||tg.tagName==='SELECT'||tg.isContentEditable)) return;
+  if(e.metaKey||e.ctrlKey||e.altKey) return;
+  const n=+e.key; if(n>=1&&n<=TABS.length){ setTab(TABS[n-1][0]); }
+});
+const dz=$('#dropzone'); let dragDepth=0;
+window.addEventListener('dragenter',e=>{ if(e.dataTransfer&&[...e.dataTransfer.types].includes('Files')){ dragDepth++; $('#dropOverlay').hidden=false; } });
+window.addEventListener('dragleave',()=>{ dragDepth=Math.max(0,dragDepth-1); if(!dragDepth) $('#dropOverlay').hidden=true; });
+window.addEventListener('dragover',e=>{ e.preventDefault(); });
+window.addEventListener('drop',e=>{ e.preventDefault(); dragDepth=0; $('#dropOverlay').hidden=true; dz.classList.remove('over'); const f=e.dataTransfer&&e.dataTransfer.files&&e.dataTransfer.files[0]; if(f) readFile(f); });
+dz.addEventListener('dragover',()=>dz.classList.add('over'));
+dz.addEventListener('dragleave',()=>dz.classList.remove('over'));
+window.addEventListener('hashchange',()=>{ const h=location.hash.slice(1); if(h&&h!==state.tab) setTab(h,false); });
+
+/* glass sheen + subtle 3D tilt */
+const canTilt=!reduceMotion&&window.matchMedia&&matchMedia('(hover:hover)').matches;
+document.addEventListener('pointermove',e=>{
+  const g=e.target.closest&&e.target.closest('.glass'); if(!g) return;
+  const r=g.getBoundingClientRect(); const x=(e.clientX-r.left)/r.width, y=(e.clientY-r.top)/r.height;
+  g.style.setProperty('--mx',(x*100).toFixed(1)+'%'); g.style.setProperty('--my',(y*100).toFixed(1)+'%');
+  if(canTilt&&g.classList.contains('tilt')) g.style.transform=`perspective(1100px) rotateX(${((.5-y)*5).toFixed(2)}deg) rotateY(${((x-.5)*6).toFixed(2)}deg) translateZ(0)`;
+},{passive:true});
+document.addEventListener('pointerout',e=>{ const g=e.target.closest&&e.target.closest('.tilt'); if(g&&!g.contains(e.relatedTarget)) g.style.transform=''; },{passive:true});
+
+/* =====================================================================
+   Cosmos: stars + tesseract
+   ===================================================================== */
+function drawStars(){
+  const cv=$('#stars'); const dpr=Math.min(2,window.devicePixelRatio||1); const w=innerWidth,h=innerHeight;
+  cv.width=w*dpr; cv.height=h*dpr; cv.style.width=w+'px'; cv.style.height=h+'px';
+  const x=cv.getContext('2d'); x.setTransform(dpr,0,0,dpr,0,0); x.clearRect(0,0,w,h);
+  let seed=1337; const rnd=()=>{ seed=(seed*16807)%2147483647; return seed/2147483647; };
+  const n=Math.round(w*h/7000);
+  for(let i=0;i<n;i++){ const r=rnd()*1.15+.2, a=rnd()*.65+.12, cool=rnd()>.7; x.fillStyle=cool?`rgba(170,240,255,${a})`:`rgba(226,234,255,${a})`; x.beginPath(); x.arc(rnd()*w,rnd()*h,r,0,6.2832); x.fill(); if(r>1.15){ x.fillStyle=`rgba(139,239,255,${a*.12})`; x.beginPath(); x.arc(rnd()*w,rnd()*h,r*4,0,6.2832); x.fill(); } }
+}
+function Tesseract(cv,scale,lw){
+  const V=[]; for(let i=0;i<16;i++) V.push([(i&1)?1:-1,(i&2)?1:-1,(i&4)?1:-1,(i&8)?1:-1]);
+  const E=[]; for(let i=0;i<16;i++) for(let j=i+1;j<16;j++){ const d=i^j; if(d&&!(d&(d-1))) E.push([i,j]); }
+  const ctx=cv.getContext('2d');
+  return function(t){
+    const dpr=Math.min(2,window.devicePixelRatio||1); const W=cv.clientWidth||cv.width/2, H=cv.clientHeight||cv.height/2;
+    if(cv.width!==Math.round(W*dpr)){ cv.width=Math.round(W*dpr); cv.height=Math.round(H*dpr); }
+    const a=t*.00034,b=t*.00021,c=t*.00012;
+    const ca=Math.cos(a),sa=Math.sin(a),cb=Math.cos(b),sb=Math.sin(b),cc=Math.cos(c),sc=Math.sin(c),ct=Math.cos(.55),st=Math.sin(.55);
+    const P=V.map(v=>{ let [x,y,z,w]=v; [x,w]=[x*ca-w*sa,x*sa+w*ca]; [z,w]=[z*cb-w*sb,z*sb+w*cb]; [x,y]=[x*cc-y*sc,x*sc+y*cc]; const k4=1/(2.7-w); x*=k4;y*=k4;z*=k4; [y,z]=[y*ct-z*st,y*st+z*ct]; const k3=1/(3.1-z); return [x*k3,y*k3,w]; });
+    ctx.setTransform(dpr,0,0,dpr,0,0); ctx.clearRect(0,0,W,H);
+    const s=Math.min(W,H)*scale, cx=W/2, cy=H/2; ctx.lineCap='round';
+    for(const [i,j] of E){ const p=P[i],q=P[j]; const m=clamp(((p[2]+q[2])/2+1.4)/2.8,0,1);
+      const r=Math.round(179+(139-179)*m), g=Math.round(166+(239-166)*m);
+      ctx.strokeStyle=`rgba(${r},${g},255,${(.22+.6*m).toFixed(3)})`; ctx.lineWidth=lw*(.6+.7*m);
+      ctx.beginPath(); ctx.moveTo(cx+p[0]*s,cy+p[1]*s); ctx.lineTo(cx+q[0]*s,cy+q[1]*s); ctx.stroke(); }
+    for(const p of P){ const m=clamp((p[2]+1.4)/2.8,0,1); ctx.fillStyle=`rgba(236,250,255,${(.35+.6*m).toFixed(3)})`; ctx.beginPath(); ctx.arc(cx+p[0]*s,cy+p[1]*s,lw*(1+m),0,6.2832); ctx.fill(); }
+  };
+}
+const tess=[Tesseract($('#tessSmall'),1.25,1.1),Tesseract($('#tessBig'),1.35,1.4)];
+function loop(t){ if(!document.hidden) tess.forEach(f=>f(t)); if(!reduceMotion) requestAnimationFrame(loop); }
+
+/* =====================================================================
+   Clock + live countdowns
+   ===================================================================== */
+function tick(){
+  const now=new Date();
+  $('#clock').textContent=now.toLocaleTimeString([], {weekday:'short',hour:'numeric',minute:'2-digit',second:'2-digit'});
+  $$('[data-cd]').forEach(el=>{ const t=+el.dataset.cd; if(el.dataset.cdfmt==='days') el.textContent=Math.max(0,Math.ceil((t-now)/DAY))+'d'; else el.textContent=cd(t-now); });
+}
+
+/* =====================================================================
+   Init
+   ===================================================================== */
+try{ loadData(); }catch(e){ state.canvas=null; loadData(); }
+setupChartDefaults();
+renderTabs();
+const startTab=(location.hash||'').slice(1);
+setTab(TABS.some(t=>t[0]===startTab)?startTab:state.tab,false);
+drawStars(); window.addEventListener('resize',()=>{ clearTimeout(drawStars._t); drawStars._t=setTimeout(drawStars,200); });
+if(reduceMotion) tess.forEach(f=>f(4000)); else requestAnimationFrame(loop);
+tick(); setInterval(tick,1000);
+setInterval(()=>{ if(state.tab==='command'&&!document.hidden){ renderQueue(); } },60000);
+window.__OS={seedRaw,calcRaw,courses,proj,gpa,items,isLever,buildQueue,edScores,masterState,state:()=>state,C};
+})();
+</script>
+</body>
+</html>
